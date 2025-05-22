@@ -1,0 +1,1 @@
+export { FooterByAnima } from "./FooterByAnima";

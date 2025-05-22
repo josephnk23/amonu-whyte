@@ -1,0 +1,192 @@
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .all-\[unset\] {
+    all: unset;
+  }
+}
+
+:root {
+  --elfrida-qodeinteractive-com-bona-nova-bold-font-family: "Bona Nova",
+    Helvetica;
+  --elfrida-qodeinteractive-com-bona-nova-bold-font-size: 37px;
+  --elfrida-qodeinteractive-com-bona-nova-bold-font-style: normal;
+  --elfrida-qodeinteractive-com-bona-nova-bold-font-weight: 700;
+  --elfrida-qodeinteractive-com-bona-nova-bold-letter-spacing: 0px;
+  --elfrida-qodeinteractive-com-bona-nova-bold-line-height: 45px;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-family: "DM Sans",
+    Helvetica;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-size: 16px;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-style: normal;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-weight: 400;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-letter-spacing: 0px;
+  --elfrida-qodeinteractive-com-DM-sans-9pt-regular-line-height: 27px;
+  --elfrida-qodeinteractive-com-outfit-regular-font-family: "Outfit", Helvetica;
+  --elfrida-qodeinteractive-com-outfit-regular-font-size: 13px;
+  --elfrida-qodeinteractive-com-outfit-regular-font-style: normal;
+  --elfrida-qodeinteractive-com-outfit-regular-font-weight: 400;
+  --elfrida-qodeinteractive-com-outfit-regular-letter-spacing: 0px;
+  --elfrida-qodeinteractive-com-outfit-regular-line-height: 25px;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-font-size: 14px;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-letter-spacing: 0.3499999940395355px;
+  --elfrida-qodeinteractive-com-outfit-regular-upper-line-height: 14px;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-font-size: 26px;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-letter-spacing: 0.5199999809265137px;
+  --elfrida-qodeinteractive-com-semantic-heading-2-upper-line-height: 32px;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-font-size: 23px;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-letter-spacing: 0.4597701132297516px;
+  --elfrida-qodeinteractive-com-semantic-heading-3-upper-line-height: 30px;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-font-size: 20px;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-letter-spacing: 0.5px;
+  --elfrida-qodeinteractive-com-semantic-heading-4-upper-line-height: 28px;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-font-size: 17px;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-letter-spacing: 0.42500001192092896px;
+  --elfrida-qodeinteractive-com-semantic-heading-5-upper-line-height: 24px;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-font-size: 14px;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-letter-spacing: 0.3499999940395355px;
+  --elfrida-qodeinteractive-com-semantic-heading-6-upper-line-height: 21px;
+  --elfrida-qodeinteractive-com-semantic-input-font-family: "Outfit", Helvetica;
+  --elfrida-qodeinteractive-com-semantic-input-font-size: 14px;
+  --elfrida-qodeinteractive-com-semantic-input-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-input-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-input-letter-spacing: 0px;
+  --elfrida-qodeinteractive-com-semantic-input-line-height: normal;
+  --elfrida-qodeinteractive-com-semantic-label-upper-font-family: "Outfit",
+    Helvetica;
+  --elfrida-qodeinteractive-com-semantic-label-upper-font-size: 12px;
+  --elfrida-qodeinteractive-com-semantic-label-upper-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-label-upper-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing: 0.41999998688697815px;
+  --elfrida-qodeinteractive-com-semantic-label-upper-line-height: 27px;
+  --elfrida-qodeinteractive-com-semantic-link-font-family: "Outfit", Helvetica;
+  --elfrida-qodeinteractive-com-semantic-link-font-size: 13px;
+  --elfrida-qodeinteractive-com-semantic-link-font-style: normal;
+  --elfrida-qodeinteractive-com-semantic-link-font-weight: 400;
+  --elfrida-qodeinteractive-com-semantic-link-letter-spacing: 0px;
+  --elfrida-qodeinteractive-com-semantic-link-line-height: 13px;
+  --elfridaqodeinteractivecomalto: rgba(217, 217, 217, 1);
+  --elfridaqodeinteractivecomblack-black: rgba(0, 0, 0, 1);
+  --elfridaqodeinteractivecomcod-gray: rgba(18, 18, 18, 1);
+  --elfridaqodeinteractivecomcutty-sark: rgba(84, 120, 128, 1);
+  --elfridaqodeinteractivecomdove-gray: rgba(115, 115, 115, 1);
+  --elfridaqodeinteractivecomgallery: rgba(236, 236, 236, 1);
+  --elfridaqodeinteractivecommine-shaft: rgba(38, 38, 38, 1);
+  --elfridaqodeinteractivecomsilver: rgba(191, 191, 191, 1);
+  --elfridaqodeinteractivecomspring-wood: rgba(236, 236, 236, 1);
+  --elfridaqodeinteractivecomtundora: rgba(76, 76, 76, 1);
+  --elfridaqodeinteractivecomwhite-white: rgba(255, 255, 255, 1);
+  --elfridaqodeinteractivecomwoodsmoke: rgba(19, 22, 26, 1);
+  --wwwmacofalltradescomblack: rgba(0, 0, 0, 1);
+  --wwwmacofalltradescommine-shaft: rgba(37, 37, 37, 1);
+  --wwwmacofalltradescomwhite: rgba(255, 255, 255, 1);
+}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 47.4% 11.2%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+
+    --card: transparent;
+    --card-foreground: 222.2 47.4% 11.2%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 215 20.2% 65.1%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 224 71% 4%;
+    --foreground: 213 31% 91%;
+
+    --muted: 223 47% 11%;
+    --muted-foreground: 215.4 16.3% 56.9%;
+
+    --accent: 216 34% 17%;
+    --accent-foreground: 210 40% 98%;
+
+    --popover: 224 71% 4%;
+    --popover-foreground: 215 20.2% 65.1%;
+
+    --border: 216 34% 17%;
+    --input: 216 34% 17%;
+
+    --card: transparent;
+    --card-foreground: 213 31% 91%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 1.2%;
+
+    --secondary: 222.2 47.4% 11.2%;
+    --secondary-foreground: 210 40% 98%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 210 40% 98%;
+
+    --ring: 216 34% 17%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+
