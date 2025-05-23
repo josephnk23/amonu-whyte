@@ -1,16 +1,17 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Define navigation items for better maintainability
 const navItems = [
-  { text: "Home", active: true },
+  { text: "Home", active: true, url: "/" },
   { text: "Collection", active: false },
   { text: "Men", active: false },
   { text: "Women", active: false },
 ];
 
 const secondaryNavItems = [
-  { text: "Shop", active: false },
+  { text: "Shop", active: false, url: "/shop" },
   { text: "Accesories", active: false },
 ];
 
@@ -65,7 +66,14 @@ export const BackgroundByAnima = () => {
                   item.active ? "border-b-[2px] border-black" : ""
                 }`}
               >
+                <Link
+                  to={item.url || "#"}
+                  className={`${
+                    item.active ? "text-black" : isScrolled ? "text-black" : "text-white group-hover:text-black"
+                  }`}
+                >
                 {item.text}
+                </Link>
               </div>
             </div>
           </div>
