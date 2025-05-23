@@ -11,6 +11,7 @@ const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <Routes>
+        
         <Route path="/" element={<ElementDefault />} />
         <Route path="/products" element={<ProductGridSection />} />
         <Route path= '/productpage' element={<ProductsPage />} />

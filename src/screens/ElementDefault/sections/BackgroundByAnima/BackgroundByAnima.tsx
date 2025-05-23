@@ -1,5 +1,5 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 // Define navigation items for better maintainability
@@ -11,7 +11,7 @@ const navItems = [
 ];
 
 const secondaryNavItems = [
-  { text: "Shop", active: false, url: "/shop" },
+  { text: "Shop", active: false, url: "/products" },
   { text: "Accesories", active: false },
 ];
 
@@ -67,10 +67,10 @@ export const BackgroundByAnima = () => {
                 }`}
               >
                 <Link
-                  to={item.url || "#"}
+                  to={item.url || "/"}
                   className={`${
                     item.active ? "text-black" : isScrolled ? "text-black" : "text-white group-hover:text-black"
-                  }`}
+                  } cursor-pointer` }
                 >
                 {item.text}
                 </Link>
@@ -90,13 +90,13 @@ export const BackgroundByAnima = () => {
         {secondaryNavItems.map((item, index) => (
           <div key={index} className="h-[69px] flex items-center">
             <div className="px-[3px] py-0">
-              <div
+              <Link to={item.url || "/"}
                 className={`font-['Outfit',Helvetica] font-normal ${
                   isScrolled ? "text-black" : "text-white group-hover:text-black"
-                } text-sm tracking-[0.42px] leading-[27px]`}
+                } text-sm tracking-[0.42px] leading-[27px] cursor-pointer`}
               >
                 {item.text}
-              </div>
+              </Link>
             </div>
           </div>
         ))}
@@ -168,13 +168,13 @@ export const BackgroundByAnima = () => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div
+                <Link to={item.url || "/"}
                   className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
                     item.active ? "border-l-2 border-black pl-2" : ""
                   }`}
                 >
                   {item.text}
-                </div>
+                </Link>
               </div>
             ))}
             {/* Secondary Navigation */}
@@ -184,11 +184,11 @@ export const BackgroundByAnima = () => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div
+                <Link to={item.url || "/"}
                   className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]`}
                 >
                   {item.text}
-                </div>
+                </Link>
               </div>
             ))}
             {/* Currency Selector */}

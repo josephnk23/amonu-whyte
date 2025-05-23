@@ -1,16 +1,17 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 // Define navigation items for better maintainability
 const navItems = [
-  { text: "Home", active: true },
+  { text: "Home", active: true, url: "/" },
   { text: "Collection", active: false },
   { text: "Men", active: false },
   { text: "Women", active: false },
 ];
 
 const secondaryNavItems = [
-  { text: "Shop", active: false },
+  { text: "Shop", active: false, url: "/products" },
   { text: "Accesories", active: false },
 ];
 
@@ -40,8 +41,8 @@ export const BackgroundByAnima = (): JSX.Element => {
       {/* SearchIcon Section */}
       <div className="flex items-center">
         <div className="flex items-center">
-          <SearchIcon className="w-3.5 h-3.5 text-black" />
-          <div className="ml-2 mt-px font-['Outfit',Helvetica] text-base font-normal text-black tracking-[0.42px] leading-[27px]">
+          <SearchIcon className="w-5 h-5 text-black" />
+          <div className="ml-2 hidden sm:block mt-px font-['Outfit',Helvetica] text-base font-normal text-black tracking-[0.42px] leading-[27px]">
             SEARCH
           </div>
         </div>
@@ -52,13 +53,13 @@ export const BackgroundByAnima = (): JSX.Element => {
         {navItems.map((item, index) => (
           <div key={index} className="h-[69.2px] flex items-center">
             <div className="px-[3px] py-0">
-              <div
+              <Link to={item.url || "/"} 
                 className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
                   item.active ? "border-b-2 border-black" : ""
                 }`}
               >
                 {item.text}
-              </div>
+              </Link>
             </div>
           </div>
         ))}
@@ -74,9 +75,9 @@ export const BackgroundByAnima = (): JSX.Element => {
         {secondaryNavItems.map((item, index) => (
           <div key={index} className="h-[69px] flex items-center">
             <div className="px-[3px] py-0">
-              <div className="font-['Outfit',Helvetica] font-normal text-black text-sm tracking-[0.42px] leading-[27px]">
+              <Link to={item.url || "/"} className="font-['Outfit',Helvetica] font-normal text-black text-sm tracking-[0.42px] leading-[27px]">
                 {item.text}
-              </div>
+              </Link>
             </div>
           </div>
         ))}
@@ -130,13 +131,13 @@ export const BackgroundByAnima = (): JSX.Element => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div
+                <Link to={item.url || "/"}
                   className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
                     item.active ? "border-l-2 border-black pl-2" : ""
                   }`}
                 >
                   {item.text}
-                </div>
+                </Link>
               </div>
             ))}
             {/* Secondary Navigation */}
@@ -146,11 +147,11 @@ export const BackgroundByAnima = (): JSX.Element => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <div
+                <Link to={item.url || "/"}
                   className="font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]"
                 >
                   {item.text}
-                </div>
+                </Link>
               </div>
             ))}
             {/* Currency Selector */}
