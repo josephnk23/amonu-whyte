@@ -1,11 +1,11 @@
 import React from "react";
 import { Button } from "../../components/ui/button";
 
-import { BackgroundByAnima } from "./sections/BackgroundByAnima/BackgroundByAnima";
+import { Header } from "./sections/Header/Header";
 
 import { FooterByAnima } from "./sections/FooterByAnima";
 import { FooterWrapperByAnima } from "./sections/FooterWrapperByAnima/FooterWrapperByAnima";
-import { MainByAnima } from "./sections/MainByAnima";
+import { MainByAnima } from "./sections/LandingPage";
 
 export const ElementDefault = (): JSX.Element => {
   const handleScrollToTop = () => {
@@ -13,7 +13,7 @@ export const ElementDefault = (): JSX.Element => {
   };
   return (
     <div className="relative w-full bg-white">
-       <BackgroundByAnima />
+       <Header />
       <div className="w-full">
         <MainByAnima />
         {/* <Card className="flex items-center justify-center pt-[8.6px] pb-[9.4px] px-0 border-b-[0.8px] [border-bottom-style:solid] border-white w-full rounded-none shadow-none">
@@ -27,7 +27,7 @@ export const ElementDefault = (): JSX.Element => {
           </CardContent>
         </Card> */}
 
-        {/* <BannerByAnima /> */}
+      
       </div>
 
       <FooterByAnima />

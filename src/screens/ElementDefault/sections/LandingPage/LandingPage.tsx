@@ -393,7 +393,7 @@ export const MainByAnima = () => {
       </div>
 
       {/* Parallax Section */}
-      <div className="relative w-full min-h-[924px] bg-elfridaqodeinteractivecomgallery flex items-end">
+      {/* <div className="relative w-full min-h-[924px] bg-elfridaqodeinteractivecomgallery flex items-end">
         <div className="absolute inset-0 overflow-hidden">
           <div className="w-full h-[1109px] -top-28 relative bg-[url(/parallax-image.png)] bg-cover bg-center" />
         </div>
@@ -435,16 +435,16 @@ export const MainByAnima = () => {
       left-0
       w-full
       h-full
-      bg-white /* The background color that will slide in */
-      transform -translate-y-full /* Initially moves the background fully above the button */
-      transition-transform duration-300 ease-in-out /* Smooth slide animation */
-      group-hover:translate-y-0 /* Slides the background down to cover the button on hover */
-      z-0 /* Lower z-index so it's behind the text span */
+      bg-white 
+      transform -translate-y-full 
+      transition-transform duration-300 ease-in-out 
+      group-hover:translate-y-0 
+      z-0 
     "
               ></span>
             </button>
         </div>
-      </div>
+      </div> */}
 
       {/* Blog Section */}
       {/* <div className="w-full px-6 md:px-20 lg:px-[100px] py-16">

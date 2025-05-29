@@ -15,7 +15,7 @@ const secondaryNavItems = [
   { text: "Accesories", active: false },
 ];
 
-export const BackgroundByAnima = () => {
+export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
