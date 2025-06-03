@@ -114,7 +114,7 @@ export const FooterWrapperByAnima = (): JSX.Element => {
               © 2024
             </span>
             <span className="font-elfrida-qodeinteractive-com-outfit-regular font-[number:var(--elfrida-qodeinteractive-com-outfit-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-outfit-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-outfit-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-outfit-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-outfit-regular-font-style)]">
-              Qode Interactive
+              Amonu Whyte
             </span>
             <span className="font-elfrida-qodeinteractive-com-outfit-regular font-[number:var(--elfrida-qodeinteractive-com-outfit-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-outfit-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-outfit-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-outfit-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-outfit-regular-font-style)]">
               , All Rights Reserved
