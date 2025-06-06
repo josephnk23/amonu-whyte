@@ -1,18 +1,18 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
-import  { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
-// Define navigation items for better maintainability
+// Define navigation items with new URL structure
 const navItems = [
   { text: "Home", active: true, url: "/" },
-  { text: "Collection", active: false },
-  { text: "Men", active: false },
-  { text: "Women", active: false },
+  { text: "Collection", active: false, url: "/products" },
+  { text: "Men", active: false, url: "/product-category/men" },
+  { text: "Women", active: false, url: "/product-category/women" },
 ];
 
 const secondaryNavItems = [
   { text: "Shop", active: false, url: "/products" },
-  { text: "Accesories", active: false },
+  { text: "Accessories", active: false, url: "/product-category/accessories" },
 ];
 
 export const Header = () => {
@@ -70,9 +70,9 @@ export const Header = () => {
                   to={item.url || "/"}
                   className={`${
                     item.active ? "text-black" : isScrolled ? "text-black" : "text-white group-hover:text-black"
-                  } cursor-pointer` }
+                  } cursor-pointer hover:text-black transition-colors`}
                 >
-                {item.text}
+                  {item.text}
                 </Link>
               </div>
             </div>
@@ -82,7 +82,9 @@ export const Header = () => {
 
       {/* Logo */}
       <div className="flex items-center justify-center h-7">
-        <div className="w-[102.66px] h-[27.99px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+        <Link to="/">
+          <div className="w-[102.66px] h-[27.99px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+        </Link>
       </div>
 
       {/* Desktop Secondary Navigation */}
@@ -90,10 +92,11 @@ export const Header = () => {
         {secondaryNavItems.map((item, index) => (
           <div key={index} className="h-[69px] flex items-center">
             <div className="px-[3px] py-0">
-              <Link to={item.url || "/"}
+              <Link 
+                to={item.url || "/"}
                 className={`font-['Outfit',Helvetica] font-normal ${
                   isScrolled ? "text-black" : "text-white group-hover:text-black"
-                } text-sm tracking-[0.42px] leading-[27px] cursor-pointer`}
+                } text-sm tracking-[0.42px] leading-[27px] cursor-pointer hover:text-black transition-colors`}
               >
                 {item.text}
               </Link>
@@ -168,7 +171,8 @@ export const Header = () => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Link to={item.url || "/"}
+                <Link 
+                  to={item.url || "/"}
                   className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
                     item.active ? "border-l-2 border-black pl-2" : ""
                   }`}
@@ -184,7 +188,8 @@ export const Header = () => {
                 className="w-full py-2"
                 onClick={() => setIsMenuOpen(false)}
               >
-                <Link to={item.url || "/"}
+                <Link 
+                  to={item.url || "/"}
                   className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]`}
                 >
                   {item.text}

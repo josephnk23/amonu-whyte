@@ -22,8 +22,7 @@ export default function LoginPage() {
     setIsLoading(true)
     setError("")
 
-    // Simulate loading delay
-    await new Promise(resolve => setTimeout(resolve, 800))
+
 
     if (username === "admin" && password === "Test@1234") {
       // Set cookie for authentication

@@ -429,7 +429,7 @@ export default function OrdersPage() {
                         <div className="space-y-4">
                           {selectedOrder.items.map((item) => (
                             <div key={item.id} className="flex gap-4">
-                              <div className="h-15 w-15 rounded border bg-muted flex items-center justify-center">
+                              <div className="h-16 w-16 rounded border bg-muted flex items-center justify-center">
                                 <img
                                   src={item.image || "/placeholder.svg"}
                                   alt={item.name}

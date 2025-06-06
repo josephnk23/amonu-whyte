@@ -1,8 +1,22 @@
 import React, {useState, useRef} from "react";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { Badge } from "../../../../components/ui/badge";
 import { Button } from "../../../../components/ui/button";
 import { Card, CardContent } from "../../../../components/ui/card";
 import { Input } from "../../../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../../../components/ui/select";
+import { 
+  Grid3X3, 
+  Grid2X2, 
+  LayoutGrid, 
+  List
+} from "lucide-react";
 
 import {
   Breadcrumb,
@@ -14,6 +28,7 @@ import {
 import { FooterByAnima } from "../FooterByAnima";
 import { FooterWrapperByAnima } from "../FooterWrapperByAnima/FooterWrapperByAnima";
 import { BackgroundByAnima } from "../Header2";
+import { QuickView } from "../../../../components/QuickView/QuickView";
 
 // Product data for mapping
 const products = [
@@ -201,6 +216,68 @@ const filterOptions = {
 };
 
 export const ProductGridSection = (): JSX.Element => {
+  const location = useLocation();
+  const { slug } = useParams<{ slug?: string }>();
+  const navigate = useNavigate();
+  const currentPath = location.pathname;
+
+  // Determine page context based on URL slug
+  const getPageContext = () => {
+    if (slug) {
+      // Handle /product-category/:slug routes
+      switch (slug) {
+        case 'men':
+          return {
+            gender: 'men',
+            title: "Men's Collection",
+            breadcrumb: "Men"
+          };
+        case 'women':
+          return {
+            gender: 'women',
+            title: "Women's Collection",
+            breadcrumb: "Women"
+          };
+        case 'accessories':
+          return {
+            category: 'accessories',
+            title: "Accessories",
+            breadcrumb: "Accessories"
+          };
+        default:
+          return {
+            title: "Products",
+            breadcrumb: "Products"
+          };
+      }
+    } else {
+      // Handle /products route
+      return {
+        title: "All Products",
+        breadcrumb: "Products"
+      };
+    }
+  };
+
+  const pageContext = getPageContext();
+
+  // Generate breadcrumbs based on URL structure
+  const generateBreadcrumbs = () => {
+    const breadcrumbs = [
+      { label: "Home", href: "/" },
+      { label: "Products", href: "/products" }
+    ];
+
+    if (slug) {
+      breadcrumbs.push({
+        label: pageContext.breadcrumb || slug,
+        href: `/product-category/${slug}`
+      });
+    }
+
+    return breadcrumbs;
+  };
+
   const minPrice = 0;
   const maxPrice = 320;
 
@@ -213,6 +290,9 @@ export const ProductGridSection = (): JSX.Element => {
     size: [] as string[],
     discount: [] as string[],
   });
+  // New state for sorting and view
+  const [sortBy, setSortBy] = useState("featured");
+  const [viewMode, setViewMode] = useState("grid3"); // list, grid2, grid3, grid4
 
   const rangeRef = useRef<HTMLDivElement>(null);
 
@@ -274,21 +354,109 @@ export const ProductGridSection = (): JSX.Element => {
 
   const hasActiveFilters = Object.values(selectedFilters).some(arr => arr.length > 0) || minValue !== minPrice || maxValue !== maxPrice;
 
+  // Handle product click navigation
+  const handleProductClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+  };
+
+  // Handle select options button click
+  const handleSelectOptions = (e: React.MouseEvent, productId: number) => {
+    e.stopPropagation(); // Prevent card click event
+    navigate(`/product/${productId}`);
+  };
+
+  // Sort options
+  const sortOptions = [
+    { value: "featured", label: "Featured" },
+    { value: "price-low", label: "Price: Low to High" },
+    { value: "price-high", label: "Price: High to Low" },
+    { value: "name-asc", label: "Name: A to Z" },
+    { value: "name-desc", label: "Name: Z to A" },
+    { value: "newest", label: "Newest" },
+  ];
+
+  // View mode options
+  const viewModes = [
+    { value: "list", icon: List, label: "List View" },
+    { value: "grid2", icon: Grid2X2, label: "2 Columns" },
+    { value: "grid3", icon: Grid3X3, label: "3 Columns" },
+    { value: "grid4", icon: LayoutGrid, label: "4 Columns" },
+  ];
+
+  // Sort products function
+  const getSortedProducts = (products: any[]) => {
+    const sorted = [...products];
+    
+    switch (sortBy) {
+      case "price-low":
+        return sorted.sort((a, b) => a.originalPrice - b.originalPrice);
+      case "price-high":
+        return sorted.sort((a, b) => b.originalPrice - a.originalPrice);
+      case "name-asc":
+        return sorted.sort((a, b) => a.name.localeCompare(b.name));
+      case "name-desc":
+        return sorted.sort((a, b) => b.name.localeCompare(a.name));
+      case "newest":
+        return sorted.sort((a, b) => b.id - a.id);
+      default:
+        return sorted; // featured - keep original order
+    }
+  };
+
+  // Apply sorting to filtered products
+  const sortedAndFilteredProducts = getSortedProducts(filteredProducts);
+
+  // Get grid classes based on view mode
+  const getGridClasses = () => {
+    switch (viewMode) {
+      case "list":
+        return "grid grid-cols-1 gap-4";
+      case "grid2":
+        return "grid grid-cols-1 md:grid-cols-2 gap-8";
+      case "grid3":
+        return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
+      case "grid4":
+        return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6";
+      default:
+        return "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8";
+    }
+  };
+
+  // Get card classes for list view
+  const getCardClasses = () => {
+    if (viewMode === "list") {
+      return "rounded-none border-none shadow-none group cursor-pointer flex flex-row";
+    }
+    return "rounded-none border-none shadow-none group cursor-pointer";
+  };
+
+  // Get image classes for list view
+  const getImageClasses = () => {
+    if (viewMode === "list") {
+      return "w-48 h-48 bg-cover bg-center";
+    }
+    return "w-full h-[447.15px] bg-cover bg-center transition-transform duration-300 group-hover:scale-105";
+  };
+
   return (<>
-  <BackgroundByAnima />
-    <Breadcrumb className="w-full text-black  py-4 border-b-[1px] font-elfrida-qodeinteractive-com-semantic-label-upper font">
+    <BackgroundByAnima />
+    <Breadcrumb className="w-full text-black py-4 border-b-[1px] font-elfrida-qodeinteractive-com-semantic-label-upper font">
       <div className="w-full mt-20 container mx-auto px-4 py-0">
         <BreadcrumbList className="flex items-center gap-2">
-          <BreadcrumbItem>
-            <BreadcrumbLink className="text-base" href="/">Home</BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator>/</BreadcrumbSeparator>
-          <BreadcrumbItem>
-            <BreadcrumbLink className="text-base" href="/products">Products</BreadcrumbLink>
-          </BreadcrumbItem>
+          {generateBreadcrumbs().map((crumb, index) => (
+            <React.Fragment key={index}>
+              <BreadcrumbItem>
+                <BreadcrumbLink className="text-base" href={crumb.href}>
+                  {crumb.label}
+                </BreadcrumbLink>
+              </BreadcrumbItem>
+              {index < generateBreadcrumbs().length - 1 && <BreadcrumbSeparator>/</BreadcrumbSeparator>}
+            </React.Fragment>
+          ))}
         </BreadcrumbList>
       </div>    
     </Breadcrumb>
+    
     <section className="container mx-auto px-4 py-8 flex flex-col md:flex-row gap-8">
       {/* Sidebar with filters */}
       <aside className="w-full md:w-80">
@@ -467,65 +635,148 @@ export const ProductGridSection = (): JSX.Element => {
 
       {/* Main content */}
       <main className="flex-1">
-        {/* Header with results count and sorting */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-8">
+        {/* Header with results count, sorting, and view options */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <p className="font-['DM_Sans',Helvetica] text-base text-neutral-800 leading-[27px]">
-            Showing 1–{filteredProducts.length} of {filteredProducts.length} results
+            Showing {sortedAndFilteredProducts.length} {sortedAndFilteredProducts.length === 1 ? "result" : "results"}
           </p>
+          
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
+            {/* Sort By Dropdown */}
+            <div className="flex items-center gap-2">
+              <span className="font-['Outfit',Helvetica] text-sm text-gray-700 whitespace-nowrap">
+                Sort by:
+              </span>
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-[200px] h-9 border-gray-300 rounded-none bg-white">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="rounded-none border-gray-300">
+                  {sortOptions.map((option) => (
+                    <SelectItem 
+                      key={option.value} 
+                      value={option.value}
+                      className="rounded-none hover:bg-gray-50"
+                    >
+                      {option.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            {/* View Mode Switcher */}
+            <div className="flex items-center gap-1 border border-gray-300 rounded-none">
+              {viewModes.map((mode) => {
+                const IconComponent = mode.icon;
+                return (
+                  <Button
+                    key={mode.value}
+                    variant="ghost"
+                    size="sm"
+                    className={`px-3 py-2 rounded-none hover:bg-gray-100 ${
+                      viewMode === mode.value 
+                        ? "bg-black text-white hover:bg-black" 
+                        : "bg-white text-gray-600"
+                    }`}
+                    onClick={() => setViewMode(mode.value)}
+                    title={mode.label}
+                  >
+                    <IconComponent className="h-4 w-4" />
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
         </div>
 
-        {/* Product grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProducts.map((product) => (
+        {/* Product grid/list */}
+        <div className={getGridClasses()}>
+          {sortedAndFilteredProducts.map((product) => (
             <Card
               key={product.id}
-              className="rounded-none border-none shadow-none"
+              className={getCardClasses()}
+              onClick={() => handleProductClick(product.id)}
             >
-              <CardContent className="p-0">
-                <div className="relative">
-                  {product.badge && (
-                    <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal">
-                      {product.badge}
-                    </Badge>
-                  )}
-                  <div
-                    className="w-full h-[447.15px] bg-cover bg-center"
-                    style={{ backgroundImage: `url(${product.image})` }}
-                  />
-                </div>
-
-                <div className="mt-4">
-                  <a
-                    href={product.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-xl tracking-[0.50px] leading-7"
-                  >
-                    {product.name}
-                  </a>
-                  <p className="font-['DM_Sans',Helvetica] font-normal text-[#4c4c4c] text-sm leading-[25px] mt-1">
-                    {product.description}
-                  </p>
-                  <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px] mt-2">
-                    {product.price}
-                  </p>
-
-                  {product.colors && (
-                    <div className="flex mt-4 gap-3.5">
-                      {product.colors.map((color, index) => (
-                        <div key={index} className="relative">
-                          <div
-                            className="w-[9px] h-[9px] rounded-[4.5px]"
-                            style={{ backgroundColor: color }}
-                          />
-                          {product.selectedColor === index && (
-                            <div className="absolute w-[17px] h-[17px] -top-1 -left-1 rounded-[8.5px] border border-solid border-black" />
-                          )}
-                        </div>
-                      ))}
+              <CardContent className={viewMode === "list" ? "p-0 flex flex-row w-full" : "p-0"}>
+                {viewMode === "list" ? (
+                  // List view layout
+                  <>
+                    <div className="relative overflow-hidden flex-shrink-0">
+                      {product.badge && (
+                        <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10">
+                          {product.badge}
+                        </Badge>
+                      )}
+                      <div
+                        className={getImageClasses()}
+                        style={{ backgroundImage: `url(${product.image})` }}
+                      />
+                      
+                      {/* QuickView Eye Icon */}
+                      <QuickView product={product} />
+                      
+                      <button 
+                        className="absolute bottom-0 left-0 right-0 bg-black text-white text-sm font-['Outfit',Helvetica] py-2 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out hover:bg-gray-800"
+                        onClick={(e) => handleSelectOptions(e, product.id)}
+                      >
+                        Select Options
+                      </button>
                     </div>
-                  )}
-                </div>
+                    
+                    <div className="flex-1 p-6">
+                      <h3 className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-xl tracking-[0.50px] leading-7 hover:text-gray-600 transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="font-['DM_Sans',Helvetica] font-normal text-[#4c4c4c] text-sm leading-[25px] mt-2">
+                        {product.description}
+                      </p>
+                      <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px] mt-3">
+                        {product.price}
+                      </p>
+                    </div>
+                  </>
+                ) : (
+                  // Grid view layout (existing)
+                  <>
+                    <div className="relative overflow-hidden">
+                      {product.badge && (
+                        <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10">
+                          {product.badge}
+                        </Badge>
+                      )}
+                      
+                      {/* QuickView Eye Icon */}
+                      <QuickView product={product} />
+                      
+                      <div
+                        className={getImageClasses()}
+                        style={{ backgroundImage: `url(${product.image})` }}
+                      />
+                      
+                      <button 
+                        className="absolute bottom-0 left-0 right-0 bg-black text-white text-sm font-['Outfit',Helvetica] py-3 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out hover:bg-gray-800"
+                        onClick={(e) => handleSelectOptions(e, product.id)}
+                      >
+                        Select Options
+                      </button>
+                    </div>
+
+                    <div className="mt-4">
+                      <h3 className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-xl tracking-[0.50px] leading-7 hover:text-gray-600 transition-colors">
+                        {product.name}
+                      </h3>
+                      <p className="font-['DM_Sans',Helvetica] font-normal text-[#4c4c4c] text-sm leading-[25px] mt-1">
+                        {product.description}
+                      </p>
+                      <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px] mt-2">
+                        {product.price}
+                      </p>
+
+                     
+                    </div>
+                  </>
+                )}
               </CardContent>
             </Card>
           ))}
