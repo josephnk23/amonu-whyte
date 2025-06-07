@@ -1,6 +1,8 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useCart } from "../../../../contexts/CartContext";
+import { SearchOverlay } from "../../../../components/SearcHOverlay"; // Add this import
 
 // Define navigation items with new URL structure
 const navItems = [
@@ -18,6 +20,8 @@ const secondaryNavItems = [
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { totalItems, openCart } = useCart(); // Add this hook
 
   useEffect(() => {
     const handleScroll = () => {
@@ -32,14 +36,23 @@ export const Header = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const openSearch = () => {
+    setIsSearchOpen(true);
+  };
+
+  const closeSearch = () => {
+    setIsSearchOpen(false);
+  };
+
   return (
+    <>
     <header
       className={`w-full h-[70px] fixed top-0 left-0 flex items-center justify-between px-4 sm:px-10 transition-all duration-300 z-50 group ${
         isScrolled || isMenuOpen ? "bg-white shadow-md" : "bg-transparent"
       } hover:bg-white hover:shadow-md`}
     >
       {/* Left Side: Search Icon */}
-      <div className="flex items-center">
+      <div className="flex items-center cursor-pointer" onClick={openSearch}>
         <div className="flex items-center">
           <SearchIcon
             className={`w-3.5 h-3.5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
@@ -110,16 +123,7 @@ export const Header = () => {
       {/* Desktop Right Side Elements */}
       <div className="hidden md:flex items-center gap-4">
         {/* Currency Selector */}
-        <div
-          className={`font-elfrida-qodeinteractive-com-semantic-label-upper flex items-center font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] ${
-            isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
-          } text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]`}
-        >
-          GHS
-          <ChevronDown
-            className={`h-5 ml-0 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
-          />
-        </div>
+     
 
         {/* User Icon */}
         <div className="flex items-center pl-3 pr-5">
@@ -128,8 +132,8 @@ export const Header = () => {
           />
         </div>
 
-        {/* Cart */}
-        <div className="flex items-center">
+        {/* Cart - Updated with click handler */}
+        <div className="flex items-center cursor-pointer" onClick={openCart}>
           <ShoppingCartIcon
             className={`h-5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
@@ -138,7 +142,7 @@ export const Header = () => {
               isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
             } text-sm tracking-[0.42px] leading-[27px]`}
           >
-            CART / 0
+            CART / {totalItems}
           </div>
         </div>
       </div>
@@ -200,12 +204,7 @@ export const Header = () => {
             ))}
             {/* Currency Selector */}
             <div className="w-full py-2 flex items-center">
-              <div
-                className={`font-elfrida-qodeinteractive-com-semantic-label-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] text-black text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]`}
-              >
-                GHS
-                <ChevronDown className="h-5 ml-1 inline text-black" />
-              </div>
+             
             </div>
             {/* User Icon */}
             <div
@@ -217,19 +216,25 @@ export const Header = () => {
                 Account
               </span>
             </div>
-            {/* Cart */}
+            {/* Cart - Updated */}
             <div
-              className="w-full py-2 flex items-center"
-              onClick={() => setIsMenuOpen(false)}
+              className="w-full py-2 flex items-center cursor-pointer"
+              onClick={() => {
+                setIsMenuOpen(false);
+                openCart();
+              }}
             >
               <ShoppingCartIcon className="h-5 text-black" />
               <span className="ml-2 font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]">
-                CART / 0
+                CART / {totalItems}
               </span>
             </div>
           </nav>
         </div>
       )}
     </header>
+    {/* Search Overlay Component */}
+      <SearchOverlay isOpen={isSearchOpen} onClose={closeSearch} />
+      </>
   );
 };

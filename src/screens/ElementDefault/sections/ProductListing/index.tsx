@@ -37,18 +37,22 @@ const products = [
     name: "SUNGLASSES",
     description: "Lorem ipsum dolor sit amet",
     price: "120.00 ₵",
+    originalPrice: 150, // Add original price for discount calculation
+    currentPrice: 120, // Current price after discount
     image: "/j.png",
     link: "https://elfrida.qodeinteractive.com/product/red-sunglasses/",
     category: "accessories",
     color: "black",
     size: "one-size",
-    originalPrice: 120,
+    discount: 20, // 20% discount
   },
   {
     id: 2,
     name: "PINK HANDBAG",
     description: "Lorem ipsum dolor sit amet",
-    price: "90.00₵ ",
+    price: "90.00₵",
+    originalPrice: 105,
+    currentPrice: 90,
     image: "/g.png",
     link: "https://elfrida.qodeinteractive.com/product/pink-handbag-2/",
     colors: ["#17181d", "#106151", "#371f3c", "#c0a3a4", "white"],
@@ -56,74 +60,86 @@ const products = [
     category: "bags",
     color: "pink",
     size: "medium",
-    originalPrice: 105,
+    discount: 14, // 14% discount
   },
   {
     id: 3,
     name: "FANCY HAT",
     description: "Lorem ipsum dolor sit amet",
-    price: "170.00₵ ",
+    price: "170.00₵",
+    originalPrice: 210,
+    currentPrice: 170,
     image: "/d.png",
     link: "https://elfrida.qodeinteractive.com/product/fancy-hat/",
     category: "accessories",
     color: "beige",
     size: "large",
-    originalPrice: 210,
+   
   },
   {
     id: 4,
     name: "RED BAG",
     description: "Lorem ipsum dolor sit amet",
     price: "170.00₵",
+    originalPrice: 170,
+    currentPrice: 170,
     image: "/f.png",
     link: "https://elfrida.qodeinteractive.com/product/red-bag-2/",
     badge: "New",
     category: "bags",
     color: "red",
     size: "small",
-    originalPrice: 170,
+    // No discount
   },
   {
     id: 5,
     name: "GOLDEN WATCH",
     description: "Lorem ipsum dolor sit amet",
     price: "200.00₵",
+    originalPrice: 250,
+    currentPrice: 200,
     image: "/p.png",
     link: "https://elfrida.qodeinteractive.com/product/red-bag/",
     category: "jewelry",
     color: "gold",
     size: "one-size",
-    originalPrice: 200,
+   
   },
   {
     id: 6,
     name: "GREEN EARRINGS",
     description: "Lorem ipsum dolor sit amet",
     price: "200.00₵",
+    originalPrice: 200,
+    currentPrice: 200,
     image: "/h.png",
     link: "https://elfrida.qodeinteractive.com/product/green-earrings/",
     category: "jewelry",
     color: "green",
     size: "one-size",
-    originalPrice: 200,
+    // No discount
   },
   {
     id: 7,
     name: "BEIGE SUNGLASSES",
     description: "Lorem ipsum dolor sit amet",
     price: "200.00 ₵",
+    originalPrice: 280,
+    currentPrice: 200,
     image: "/g-1.png",
     link: "https://elfrida.qodeinteractive.com/product/beige-sunglasses/",
     category: "accessories",
     color: "beige",
     size: "one-size",
-    originalPrice: 200,
+    
   },
   {
     id: 8,
     name: "PARTY BAG",
     description: "Lorem ipsum dolor sit amet",
     price: "220.00₵",
+    originalPrice: 220,
+    currentPrice: 220,
     image: "/j-1.png",
     link: "https://elfrida.qodeinteractive.com/product/party-bag/",
     colors: ["#482929", "#c6ceb6"],
@@ -131,55 +147,63 @@ const products = [
     category: "bags",
     color: "brown",
     size: "small",
-    originalPrice: 220,
+    // No discount
   },
   {
     id: 9,
     name: "LEOPARD BELT",
     description: "Lorem ipsum dolor sit amet",
     price: "120.00₵",
+    originalPrice: 160,
+    currentPrice: 120,
     image: "/h-1.png",
     link: "https://elfrida.qodeinteractive.com/product/leopard-belt/",
     category: "accessories",
     color: "leopard",
     size: "medium",
-    originalPrice: 120,
+    
   },
   {
     id: 10,
     name: "ENGAGEMENT RING",
     description: "Lorem ipsum dolor sit amet",
     price: "120.00 ₵",
+    originalPrice: 120,
+    currentPrice: 120,
     image: "/f-1.png",
     link: "https://elfrida.qodeinteractive.com/product/golden-ring-copy/",
     category: "jewelry",
     color: "gold",
     size: "one-size",
-    originalPrice: 120,
+    // No discount
   },
   {
     id: 11,
     name: "PARTY PURSE",
     description: "Lorem ipsum dolor sit amet",
     price: "250.00 ₵",
+    originalPrice: 300,
+    currentPrice: 250,
     image: "/f-2.png",
     link: "https://elfrida.qodeinteractive.com/product/party-purse/",
     category: "bags",
     color: "black",
     size: "small",
-    originalPrice: 250,
+  
   },
   {
     id: 12,
     name: "BRONZE NECKLASSE",
     description: "Lorem ipsum dolor sit amet",
     price: "90.00₵",
+    originalPrice: 120,
+    currentPrice: 90,
     image: "/s.png",
     link: "https://elfrida.qodeinteractive.com/product/bronze-necklasse/",
     category: "jewelry",
     color: "bronze",
     size: "one-size",
-    originalPrice: 90,
+   
   },
 ];
 
@@ -212,6 +236,11 @@ const filterOptions = {
     { id: "30", name: "30% Off", count: 1 },
     { id: "50", name: "50% Off", count: 1 },
   ],
+};
+
+// Helper function to format price
+const formatPrice = (price: number) => {
+  return `${price.toFixed(2)} ₵`;
 };
 
 export const ProductGridSection = (): JSX.Element => {
@@ -702,11 +731,27 @@ export const ProductGridSection = (): JSX.Element => {
                   // List view layout
                   <>
                     <div className="relative overflow-hidden flex-shrink-0">
-                      {product.badge && (
-                        <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10">
+                      {/* Discount Badge */}
+                      {product.discount && (
+                        <Badge className="absolute top-3.5 left-4 bg-red-600 text-white font-['DM_Sans',Helvetica] text-[13px] font-normal z-20 px-2 py-1">
+                          -{product.discount}%
+                        </Badge>
+                      )}
+                      
+                      {/* Product Badge (New, Sale, etc.) */}
+                      {product.badge && !product.discount && (
+                        <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10 border border-black">
                           {product.badge}
                         </Badge>
                       )}
+                      
+                      {/* Both badges - stack them */}
+                      {product.badge && product.discount && (
+                        <Badge className="absolute top-12 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10 border border-black">
+                          {product.badge}
+                        </Badge>
+                      )}
+
                       <div
                         className={getImageClasses()}
                         style={{ backgroundImage: `url(${product.image})` }}
@@ -730,17 +775,50 @@ export const ProductGridSection = (): JSX.Element => {
                       <p className="font-['DM_Sans',Helvetica] font-normal text-[#4c4c4c] text-sm leading-[25px] mt-2">
                         {product.description}
                       </p>
-                      <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px] mt-3">
-                        {product.price}
-                      </p>
+                      
+                      {/* Price with discount display */}
+                      <div className="mt-3">
+                        {product.discount ? (
+                          <div className="flex items-center gap-2">
+                            <span className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px]">
+                              {formatPrice(product.currentPrice)}
+                            </span>
+                            <span className="font-['Outfit',Helvetica] font-normal text-gray-500 text-sm tracking-[0.35px] leading-[21px] line-through">
+                              {formatPrice(product.originalPrice)}
+                            </span>
+                            <span className="font-['Outfit',Helvetica] font-medium text-red-600 text-xs">
+                              Save {formatPrice(product.originalPrice - product.currentPrice)}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px]">
+                            {product.price}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </>
                 ) : (
-                  // Grid view layout (existing)
+                  // Grid view layout
                   <>
                     <div className="relative overflow-hidden">
-                      {product.badge && (
-                        <Badge className="absolute top-3.5 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10">
+                      {/* Discount Badge */}
+                      {product.discount && (
+                        <Badge className="absolute rounded-none top-3.5 left-4 bg-white border-red-600 text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-20 px-2 py-1">
+                          -{product.discount}%
+                        </Badge>
+                      )}
+                      
+                      {/* Product Badge (New, Sale, etc.) */}
+                      {product.badge && !product.discount && (
+                        <Badge className="absolute top-3.5 left-4 bg-white  rounded-none text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10 border border-black">
+                          {product.badge}
+                        </Badge>
+                      )}
+                      
+                      {/* Both badges - stack them */}
+                      {product.badge && product.discount && (
+                        <Badge className="absolute top-12 left-4 bg-transparent text-black font-['DM_Sans',Helvetica] text-[13px] font-normal z-10 border border-black">
                           {product.badge}
                         </Badge>
                       )}
@@ -768,11 +846,29 @@ export const ProductGridSection = (): JSX.Element => {
                       <p className="font-['DM_Sans',Helvetica] font-normal text-[#4c4c4c] text-sm leading-[25px] mt-1">
                         {product.description}
                       </p>
-                      <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px] mt-2">
-                        {product.price}
-                      </p>
-
-                     
+                      
+                      {/* Price with discount display */}
+                      <div className="mt-2">
+                        {product.discount ? (
+                          <div className="flex flex-col gap-1">
+                            <div className="flex items-center gap-2">
+                              <span className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px]">
+                                {formatPrice(product.currentPrice)}
+                              </span>
+                              <span className="font-['Outfit',Helvetica] font-normal text-gray-500 text-sm tracking-[0.35px] leading-[21px] line-through">
+                                {formatPrice(product.originalPrice)}
+                              </span>
+                            </div>
+                            <span className="font-['Outfit',Helvetica] font-medium text-red-600 text-xs">
+                              Save {formatPrice(product.originalPrice - product.currentPrice)}
+                            </span>
+                          </div>
+                        ) : (
+                          <p className="font-['Outfit',Helvetica] font-normal text-[#18191a] text-sm tracking-[0.35px] leading-[21px]">
+                            {product.price}
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </>
                 )}

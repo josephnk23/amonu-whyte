@@ -53,9 +53,9 @@ export const QuickView: React.FC<QuickViewProps> = ({ product, children }) => {
   };
 
   const formatPrice = (price: string) => {
-    // Convert price format from "120.00$" to "$300.00 USD"
+    // Convert price format from "120.00₵" to "₵300.00 GHS"
     const numericPrice = price.replace(/[^0-9.-]/g, '');
-    return `$${numericPrice} USD`;
+    return `₵${numericPrice} GHS`;
   };
 
   // Handle click on the eye icon to prevent parent click
