@@ -18,9 +18,7 @@ export const CartDrawer: React.FC = () => {
       />
       
       {/* Drawer */}
-      <div className={`fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] transform transition-transform duration-300 ease-in-out ${
-        isOpen ? 'translate-x-0' : 'translate-x-full'
-      }`}>
+ <div className="fixed top-0 right-0 h-full w-full max-w-md bg-white z-[70] transform transition-transform duration-300 ease-in-out translate-x-0">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
           <h2 className="font-['Outfit',Helvetica] font-normal text-[#111111] text-lg tracking-[0.05px]">
@@ -80,7 +78,7 @@ export const CartDrawer: React.FC = () => {
                   <div className="flex items-center mt-3 gap-3">
                     <div className="flex items-center border border-gray-300 rounded-md">
                       <button
-                        onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                        onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
                         className="p-2 hover:bg-gray-50 transition-colors"
                       >
                         <Minus className="h-3 w-3 text-gray-600" />
@@ -125,11 +123,13 @@ export const CartDrawer: React.FC = () => {
                   VIEW CART
                 </Button>
               </Link>
-              <Button 
-                className="w-full font-['Outfit',Helvetica] font-normal text-white text-sm tracking-[0.05px] bg-black rounded-none hover:bg-gray-800"
-              >
-                CHECKOUT
-              </Button>
+ <Link to="/checkout" onClick={closeCart}>
+   <Button 
+     className="w-full font-['Outfit',Helvetica] font-normal text-white text-sm tracking-[0.05px] bg-black rounded-none hover:bg-gray-800"
+   >
+     CHECKOUT
+   </Button>
+ </Link>
             </div>
           </div>
         )}

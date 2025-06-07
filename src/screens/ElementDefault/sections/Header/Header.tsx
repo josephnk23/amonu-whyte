@@ -1,27 +1,51 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../../../contexts/CartContext";
-import { SearchOverlay } from "../../../../components/SearcHOverlay"; // Add this import
+import { SearchOverlay } from "../../../../components/SearcHOverlay";// Fixed casing
 
-// Define navigation items with new URL structure
+// Define navigation items without hardcoded active states
 const navItems = [
-  { text: "Home", active: true, url: "/" },
-  { text: "Collection", active: false, url: "/products" },
-  { text: "Men", active: false, url: "/product-category/men" },
-  { text: "Women", active: false, url: "/product-category/women" },
+  { text: "Home", url: "/" },
+  { text: "Collection", url: "/products" },
+  { text: "Men", url: "/product-category/men" },
+  { text: "Women", url: "/product-category/women" },
 ];
 
 const secondaryNavItems = [
-  { text: "Shop", active: false, url: "/products" },
-  { text: "Accessories", active: false, url: "/product-category/accessories" },
+  { text: "Shop", url: "/products" },
+  { text: "Accessories", url: "/product-category/accessories" },
 ];
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const { totalItems, openCart } = useCart(); // Add this hook
+  const { totalItems, openCart } = useCart();
+  const location = useLocation();
+
+  // Improved function to determine if a navigation item is active
+  const isActiveItem = (itemUrl: string) => {
+    const currentPath = location.pathname;
+    
+    // Special case for home - only active when exactly on home page
+    if (itemUrl === "/") {
+      return currentPath === "/";
+    }
+    
+    // For /products route, make it active for both /products and /products with search params
+    if (itemUrl === "/products") {
+      return currentPath === "/products" || currentPath.startsWith("/products?");
+    }
+    
+    // For category routes, check if current path starts with the item URL
+    if (itemUrl.startsWith("/product-category/")) {
+      return currentPath === itemUrl;
+    }
+    
+    // Default: check if current path starts with item URL
+    return currentPath.startsWith(itemUrl);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,62 +93,69 @@ export const Header = () => {
 
       {/* Desktop Navigation */}
       <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
-        {navItems.map((item, index) => (
-          <div key={index} className="h-[69.2px] flex items-center">
-            <div className="px-[3px] py-0">
-              <div
-                className={`font-['Outfit',Helvetica] font-normal text-sm ${
-                  isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
-                } tracking-[0.05px] leading-[27px] ${
-                  item.active 
-                    ? `border-b-[2px] ${isScrolled || isMenuOpen ? "border-black" : "border-white group-hover:border-black"}` 
-                    : ""
-                }`}
-              >
-                <Link
-                  to={item.url || "/"}
-                  className={`${
+        {navItems.map((item, index) => {
+          const isActive = isActiveItem(item.url);
+          return (
+            <div key={index} className="h-[69.2px] flex items-center">
+              <div className="px-[3px] py-0">
+                <div
+                  className={`font-['Outfit',Helvetica] font-normal text-sm ${
                     isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
-                  } cursor-pointer hover:text-black transition-colors`}
+                  } tracking-[0.05px] leading-[27px] ${
+                    isActive 
+                      ? `border-b-[2px] ${isScrolled || isMenuOpen ? "border-black" : "border-white group-hover:border-black"}` 
+                      : ""
+                  }`}
                 >
-                  {item.text}
-                </Link>
+                  <Link
+                    to={item.url}
+                    className={`${
+                      isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
+                    } cursor-pointer hover:text-black transition-colors ${
+                      isActive ? "font-medium" : ""
+                    }`}
+                  >
+                    {item.text}
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Logo */}
       <div className="flex items-center justify-center h-7">
         <Link to="/">
-          <div className="w-[102.66px] h-[50px]  bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+          <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
         </Link>
       </div>
 
       {/* Desktop Secondary Navigation */}
       <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
-        {secondaryNavItems.map((item, index) => (
-          <div key={index} className="h-[69px] flex items-center">
-            <div className="px-[3px] py-0">
-              <Link 
-                to={item.url || "/"}
-                className={`font-['Outfit',Helvetica] font-normal ${
-                  isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
-                } text-sm tracking-[0.42px] leading-[27px] cursor-pointer hover:text-black transition-colors`}
-              >
-                {item.text}
-              </Link>
+        {secondaryNavItems.map((item, index) => {
+          const isActive = isActiveItem(item.url);
+          return (
+            <div key={index} className="h-[69px] flex items-center">
+              <div className="px-[3px] py-0">
+                <Link 
+                  to={item.url}
+                  className={`font-['Outfit',Helvetica] font-normal ${
+                    isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
+                  } text-sm tracking-[0.42px] leading-[27px] cursor-pointer hover:text-black transition-colors ${
+                    isActive ? "font-medium border-b-[2px] border-current" : ""
+                  }`}
+                >
+                  {item.text}
+                </Link>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Desktop Right Side Elements */}
       <div className="hidden md:flex items-center gap-4">
-        {/* Currency Selector */}
-     
-
         {/* User Icon */}
         <div className="flex items-center pl-3 pr-5">
           <User2Icon
@@ -171,41 +202,46 @@ export const Header = () => {
         >
           <nav className="flex flex-col items-start p-4">
             {/* Primary Navigation */}
-            {navItems.map((item, index) => (
-              <div
-                key={index}
-                className="w-full py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Link 
-                  to={item.url || "/"}
-                  className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
-                    item.active ? "border-l-2 border-black pl-2" : ""
-                  }`}
+            {navItems.map((item, index) => {
+              const isActive = isActiveItem(item.url);
+              return (
+                <div
+                  key={index}
+                  className="w-full py-2"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.text}
-                </Link>
-              </div>
-            ))}
+                  <Link 
+                    to={item.url}
+                    className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
+                      isActive ? "border-l-2 border-black pl-2 font-medium" : ""
+                    }`}
+                  >
+                    {item.text}
+                  </Link>
+                </div>
+              );
+            })}
             {/* Secondary Navigation */}
-            {secondaryNavItems.map((item, index) => (
-              <div
-                key={index}
-                className="w-full py-2"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <Link 
-                  to={item.url || "/"}
-                  className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]`}
+            {secondaryNavItems.map((item, index) => {
+              const isActive = isActiveItem(item.url);
+              return (
+                <div
+                  key={index}
+                  className="w-full py-2"
+                  onClick={() => setIsMenuOpen(false)}
                 >
-                  {item.text}
-                </Link>
-              </div>
-            ))}
-            {/* Currency Selector */}
-            <div className="w-full py-2 flex items-center">
-             
-            </div>
+                  <Link 
+                    to={item.url}
+                    className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
+                      isActive ? "border-l-2 border-black pl-2 font-medium" : ""
+                    }`}
+                  >
+                    {item.text}
+                  </Link>
+                </div>
+              );
+            })}
+            
             {/* User Icon */}
             <div
               className="w-full py-2 flex items-center"
@@ -216,6 +252,7 @@ export const Header = () => {
                 Account
               </span>
             </div>
+            
             {/* Cart - Updated */}
             <div
               className="w-full py-2 flex items-center cursor-pointer"
@@ -233,8 +270,9 @@ export const Header = () => {
         </div>
       )}
     </header>
+    
     {/* Search Overlay Component */}
-      <SearchOverlay isOpen={isSearchOpen} onClose={closeSearch} />
-      </>
+    <SearchOverlay isOpen={isSearchOpen} onClose={closeSearch} />
+    </>
   );
 };

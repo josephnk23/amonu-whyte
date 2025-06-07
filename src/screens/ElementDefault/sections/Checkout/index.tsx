@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Lock, CreditCard, Truck, MapPin, User, Mail, Phone } from 'lucide-react';
+import { ArrowLeft, Lock, CreditCard, Truck, User, Phone } from 'lucide-react';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
 import { useCart } from '../../../../contexts/CartContext';
 import { Button } from '../../../../components/ui/button';
 import { Card, CardContent } from '../../../../components/ui/card';
@@ -24,26 +27,131 @@ const formatPrice = (price: number) => {
   return `${price.toFixed(2)} ₵`;
 };
 
+// Checkout form validation schema
+const checkoutSchema = z.object({
+  // Customer Information
+  firstName: z.string().min(2, 'First name must be at least 2 characters'),
+  lastName: z.string().min(2, 'Last name must be at least 2 characters'),
+  email: z.string().email('Please enter a valid email address'),
+  phone: z.string().min(10, 'Phone number must be at least 10 digits').regex(/^\+?[\d\s\-\(\)]+$/, 'Please enter a valid phone number'),
+  
+  // Shipping Address
+  streetAddress: z.string().min(5, 'Please enter a valid street address'),
+  city: z.string().min(2, 'City must be at least 2 characters'),
+  state: z.string().min(2, 'Please select a state'),
+  zipCode: z.string().min(5, 'Zip code must be at least 5 characters'),
+  country: z.string().min(2, 'Please select a country'),
+  
+  // Payment Information (optional initially)
+  cardNumber: z.string().optional(),
+  expiryDate: z.string().optional(),
+  cvv: z.string().optional(),
+  cardholderName: z.string().optional(),
+  momoNumber: z.string().optional(),
+  
+  // Options
+  shippingMethod: z.enum(['standard', 'express'], {
+    errorMap: () => ({ message: 'Please select a shipping method' })
+  }),
+  paymentMethod: z.enum(['card', 'momo'], {
+    errorMap: () => ({ message: 'Please select a payment method' })
+  }),
+  
+  // Agreements
+  termsAccepted: z.boolean().refine(val => val === true, {
+    message: 'You must accept the terms and conditions'
+  }),
+}).superRefine((data, ctx) => {
+  // Conditional validation for payment methods
+  if (data.paymentMethod === 'card') {
+    if (!data.cardNumber || data.cardNumber.length < 13) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Card number is required and must be at least 13 digits',
+        path: ['cardNumber']
+      });
+    }
+    if (!data.expiryDate || !/^(0[1-9]|1[0-2])\/\d{2}$/.test(data.expiryDate)) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Please enter expiry date in MM/YY format',
+        path: ['expiryDate']
+      });
+    }
+    if (!data.cvv || data.cvv.length < 3) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'CVV must be at least 3 digits',
+        path: ['cvv']
+      });
+    }
+    if (!data.cardholderName || data.cardholderName.length < 2) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Cardholder name is required',
+        path: ['cardholderName']
+      });
+    }
+  }
+  
+  if (data.paymentMethod === 'momo') {
+    if (!data.momoNumber || data.momoNumber.length < 10) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: 'Mobile money number is required',
+        path: ['momoNumber']
+      });
+    }
+  }
+});
+
+type CheckoutFormData = z.infer<typeof checkoutSchema>;
+
 export const CheckoutPage: React.FC = () => {
   const { items, totalPrice, clearCart } = useCart();
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [shippingMethod, setShippingMethod] = useState('standard');
-  const [billingDifferent, setBillingDifferent] = useState(false);
-  const [agreedToTerms, setAgreedToTerms] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isValid },
+    watch,
+  } = useForm<CheckoutFormData>({
+    resolver: zodResolver(checkoutSchema),
+    mode: 'onChange',
+    defaultValues: {
+      shippingMethod: 'standard',
+      paymentMethod: 'card',
+      termsAccepted: false,
+      country: 'Ghana',
+    },
+  });
+
+  const watchedPaymentMethod = watch('paymentMethod');
+  const watchedShippingMethod = watch('shippingMethod');
 
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0);
-  const shippingCost = totalPrice >= 50 ? 0 : 5;
+  const shippingCost = watchedShippingMethod === 'express' ? 15 : (totalPrice >= 50 ? 0 : 5);
   const tax = totalPrice * 0.125; // 12.5% tax
   const finalTotal = totalPrice + shippingCost + tax;
-
-  const handlePlaceOrder = () => {
-    if (!agreedToTerms) {
-      alert('Please agree to the terms and conditions');
-      return;
+  const onSubmit = async (data: CheckoutFormData) => {
+    setIsSubmitting(true);
+    try {
+      // Simulate order processing
+      console.log('Order data:', data);
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      alert('Order placed successfully!');
+      clearCart();
+      
+      // In a real app, you would redirect to a success page
+      // navigate('/order-success');
+    } catch (error) {
+      console.error('Order submission error:', error);
+      alert('Failed to place order. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
-    // Handle order placement
-    alert('Order placed successfully!');
-    clearCart();
   };
 
   if (items.length === 0) {
@@ -114,12 +222,10 @@ export const CheckoutPage: React.FC = () => {
                 Secure checkout - Your information is protected with SSL encryption
               </span>
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
+          </div>          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
             
             {/* Checkout Form */}
-            <div className="lg:col-span-2 space-y-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 space-y-8">
               
               {/* Customer Information */}
               <Card className="border border-gray-200 rounded-none overflow-hidden">
@@ -132,26 +238,37 @@ export const CheckoutPage: React.FC = () => {
                       </h2>
                     </div>
                   </div>
-                  
-                  <div className="p-6 space-y-4">
+                    <div className="p-6 space-y-4">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                           First Name *
                         </Label>
                         <Input 
+                          {...register('firstName')}
                           className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                           placeholder="Enter your first name"
                         />
+                        {errors.firstName && (
+                          <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                            {errors.firstName.message}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                           Last Name *
                         </Label>
                         <Input 
+                          {...register('lastName')}
                           className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                           placeholder="Enter your last name"
                         />
+                        {errors.lastName && (
+                          <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                            {errors.lastName.message}
+                          </p>
+                        )}
                       </div>
                     </div>
                     
@@ -160,10 +277,16 @@ export const CheckoutPage: React.FC = () => {
                         Email Address *
                       </Label>
                       <Input 
+                        {...register('email')}
                         type="email"
                         className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                         placeholder="Enter your email address"
                       />
+                      {errors.email && (
+                        <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                          {errors.email.message}
+                        </p>
+                      )}
                     </div>
                     
                     <div>
@@ -171,10 +294,16 @@ export const CheckoutPage: React.FC = () => {
                         Phone Number *
                       </Label>
                       <Input 
+                        {...register('phone')}
                         type="tel"
                         className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                         placeholder="Enter your phone number"
                       />
+                      {errors.phone && (
+                        <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                          {errors.phone.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                 </CardContent>
@@ -191,16 +320,21 @@ export const CheckoutPage: React.FC = () => {
                       </h2>
                     </div>
                   </div>
-                  
-                  <div className="p-6 space-y-4">
+                    <div className="p-6 space-y-4">
                     <div>
                       <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                         Street Address *
                       </Label>
                       <Input 
+                        {...register('streetAddress')}
                         className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                         placeholder="Enter your street address"
                       />
+                      {errors.streetAddress && (
+                        <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                          {errors.streetAddress.message}
+                        </p>
+                      )}
                     </div>
                     
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -209,27 +343,45 @@ export const CheckoutPage: React.FC = () => {
                           City *
                         </Label>
                         <Input 
+                          {...register('city')}
                           className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                           placeholder="City"
                         />
+                        {errors.city && (
+                          <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                            {errors.city.message}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                           Region *
                         </Label>
                         <Input 
+                          {...register('state')}
                           className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                           placeholder="Region"
                         />
+                        {errors.state && (
+                          <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                            {errors.state.message}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
-                          Postal Code
+                          Postal Code *
                         </Label>
                         <Input 
+                          {...register('zipCode')}
                           className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                           placeholder="Postal Code"
                         />
+                        {errors.zipCode && (
+                          <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                            {errors.zipCode.message}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -247,39 +399,49 @@ export const CheckoutPage: React.FC = () => {
                       </h2>
                     </div>
                   </div>
-                  
-                  <div className="p-6">
-                    <RadioGroup value={shippingMethod} onValueChange={setShippingMethod}>
-                      <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
-                        <RadioGroupItem value="standard" id="standard" />
-                        <Label htmlFor="standard" className="flex-1 cursor-pointer">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-['Outfit',Helvetica] font-medium text-[#111111]">Standard Shipping</p>
-                              <p className="font-['Outfit',Helvetica] text-sm text-gray-600">5-7 business days</p>
-                            </div>
-                            <span className="font-['Outfit',Helvetica] text-sm text-[#111111]">
-                              {totalPrice >= 50 ? 'FREE' : formatPrice(5)}
-                            </span>
+                    <div className="p-6">
+                    <Controller
+                      name="shippingMethod"
+                      control={control}
+                      render={({ field }) => (
+                        <RadioGroup value={field.value} onValueChange={field.onChange}>
+                          <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <RadioGroupItem value="standard" id="standard" />
+                            <Label htmlFor="standard" className="flex-1 cursor-pointer">
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="font-['Outfit',Helvetica] font-medium text-[#111111]">Standard Shipping</p>
+                                  <p className="font-['Outfit',Helvetica] text-sm text-gray-600">5-7 business days</p>
+                                </div>
+                                <span className="font-['Outfit',Helvetica] text-sm text-[#111111]">
+                                  {totalPrice >= 50 ? 'FREE' : formatPrice(5)}
+                                </span>
+                              </div>
+                            </Label>
                           </div>
-                        </Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
-                        <RadioGroupItem value="express" id="express" />
-                        <Label htmlFor="express" className="flex-1 cursor-pointer">
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-['Outfit',Helvetica] font-medium text-[#111111]">Express Shipping</p>
-                              <p className="font-['Outfit',Helvetica] text-sm text-gray-600">2-3 business days</p>
-                            </div>
-                            <span className="font-['Outfit',Helvetica] text-sm text-[#111111]">
-                              {formatPrice(15)}
-                            </span>
+                          
+                          <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <RadioGroupItem value="express" id="express" />
+                            <Label htmlFor="express" className="flex-1 cursor-pointer">
+                              <div className="flex justify-between items-center">
+                                <div>
+                                  <p className="font-['Outfit',Helvetica] font-medium text-[#111111]">Express Shipping</p>
+                                  <p className="font-['Outfit',Helvetica] text-sm text-gray-600">2-3 business days</p>
+                                </div>
+                                <span className="font-['Outfit',Helvetica] text-sm text-[#111111]">
+                                  {formatPrice(15)}
+                                </span>
+                              </div>
+                            </Label>
                           </div>
-                        </Label>
-                      </div>
-                    </RadioGroup>
+                        </RadioGroup>
+                      )}
+                    />
+                    {errors.shippingMethod && (
+                      <p className="text-red-500 text-sm mt-2 font-['Outfit',Helvetica]">
+                        {errors.shippingMethod.message}
+                      </p>
+                    )}
                   </div>
                 </CardContent>
               </Card>
@@ -295,40 +457,56 @@ export const CheckoutPage: React.FC = () => {
                       </h2>
                     </div>
                   </div>
-                  
-                  <div className="p-6">
-                    <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod}>
-                      <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
-                        <RadioGroupItem value="card" id="card" />
-                        <Label htmlFor="card" className="flex-1 cursor-pointer">
-                          <div className="flex items-center gap-3">
-                            <CreditCard className="h-4 w-4" />
-                            <span className="font-['Outfit',Helvetica] text-[#111111]">Credit/Debit Card</span>
+                    <div className="p-6">
+                    <Controller
+                      name="paymentMethod"
+                      control={control}
+                      render={({ field }) => (
+                        <RadioGroup value={field.value} onValueChange={field.onChange}>
+                          <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <RadioGroupItem value="card" id="card" />
+                            <Label htmlFor="card" className="flex-1 cursor-pointer">
+                              <div className="flex items-center gap-3">
+                                <CreditCard className="h-4 w-4" />
+                                <span className="font-['Outfit',Helvetica] text-[#111111]">Credit/Debit Card</span>
+                              </div>
+                            </Label>
                           </div>
-                        </Label>
-                      </div>
-                      
-                      <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
-                        <RadioGroupItem value="momo" id="momo" />
-                        <Label htmlFor="momo" className="flex-1 cursor-pointer">
-                          <div className="flex items-center gap-3">
-                            <Phone className="h-4 w-4" />
-                            <span className="font-['Outfit',Helvetica] text-[#111111]">Mobile Money</span>
+                          
+                          <div className="flex items-center space-x-3 p-4 border border-gray-200 hover:bg-gray-50 transition-colors">
+                            <RadioGroupItem value="momo" id="momo" />
+                            <Label htmlFor="momo" className="flex-1 cursor-pointer">
+                              <div className="flex items-center gap-3">
+                                <Phone className="h-4 w-4" />
+                                <span className="font-['Outfit',Helvetica] text-[#111111]">Mobile Money</span>
+                              </div>
+                            </Label>
                           </div>
-                        </Label>
-                      </div>
-                    </RadioGroup>
+                        </RadioGroup>
+                      )}
+                    />
+                    {errors.paymentMethod && (
+                      <p className="text-red-500 text-sm mt-2 font-['Outfit',Helvetica]">
+                        {errors.paymentMethod.message}
+                      </p>
+                    )}
 
-                    {paymentMethod === 'card' && (
+                    {watchedPaymentMethod === 'card' && (
                       <div className="mt-6 space-y-4 p-4 bg-gray-50 border border-gray-200">
                         <div>
                           <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                             Card Number *
                           </Label>
                           <Input 
+                            {...register('cardNumber')}
                             className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                             placeholder="1234 5678 9012 3456"
                           />
+                          {errors.cardNumber && (
+                            <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                              {errors.cardNumber.message}
+                            </p>
+                          )}
                         </div>
                         
                         <div className="grid grid-cols-2 gap-4">
@@ -337,18 +515,30 @@ export const CheckoutPage: React.FC = () => {
                               Expiry Date *
                             </Label>
                             <Input 
+                              {...register('expiryDate')}
                               className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                               placeholder="MM/YY"
                             />
+                            {errors.expiryDate && (
+                              <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                                {errors.expiryDate.message}
+                              </p>
+                            )}
                           </div>
                           <div>
                             <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                               CVV *
                             </Label>
                             <Input 
+                              {...register('cvv')}
                               className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                               placeholder="123"
                             />
+                            {errors.cvv && (
+                              <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                                {errors.cvv.message}
+                              </p>
+                            )}
                           </div>
                         </div>
                         
@@ -357,39 +547,55 @@ export const CheckoutPage: React.FC = () => {
                             Cardholder Name *
                           </Label>
                           <Input 
+                            {...register('cardholderName')}
                             className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                             placeholder="Name on card"
                           />
+                          {errors.cardholderName && (
+                            <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                              {errors.cardholderName.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     )}
 
-                    {paymentMethod === 'momo' && (
+                    {watchedPaymentMethod === 'momo' && (
                       <div className="mt-6 space-y-4 p-4 bg-gray-50 border border-gray-200">
                         <div>
                           <Label className="font-['Outfit',Helvetica] text-sm text-[#111111] mb-2 block">
                             Mobile Money Number *
                           </Label>
                           <Input 
+                            {...register('momoNumber')}
                             className="rounded-none border-gray-300 font-['Outfit',Helvetica]" 
                             placeholder="Enter your mobile money number"
                           />
+                          {errors.momoNumber && (
+                            <p className="text-red-500 text-sm mt-1 font-['Outfit',Helvetica]">
+                              {errors.momoNumber.message}
+                            </p>
+                          )}
                         </div>
                       </div>
                     )}
                   </div>
                 </CardContent>
-              </Card>
-
-              {/* Terms and Conditions */}
+              </Card>              {/* Terms and Conditions */}
               <Card className="border border-gray-200 rounded-none overflow-hidden">
                 <CardContent className="p-6">
                   <div className="flex items-start space-x-3">
-                    <Checkbox
-                      id="terms"
-                      checked={agreedToTerms}
-                      onCheckedChange={setBillingDifferent}
-                      className="rounded-none border-gray-300 mt-1"
+                    <Controller
+                      name="termsAccepted"
+                      control={control}
+                      render={({ field }) => (
+                        <Checkbox
+                          id="terms"
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                          className="rounded-none border-gray-300 mt-1"
+                        />
+                      )}
                     />
                     <Label htmlFor="terms" className="font-['Outfit',Helvetica] text-sm text-[#111111] leading-relaxed">
                       I agree to the{' '}
@@ -402,10 +608,14 @@ export const CheckoutPage: React.FC = () => {
                       </Link>
                       . I understand that my order will be processed according to these terms.
                     </Label>
-                  </div>
+                  </div>                  {errors.termsAccepted && (
+                    <p className="text-red-500 text-sm mt-2 font-['Outfit',Helvetica]">
+                      {errors.termsAccepted.message}
+                    </p>
+                  )}
                 </CardContent>
               </Card>
-            </div>
+            </form>
 
             {/* Order Summary */}
             <div className="lg:col-span-1">
@@ -460,13 +670,12 @@ export const CheckoutPage: React.FC = () => {
                           {formatPrice(totalPrice)}
                         </span>
                       </div>
-                      
-                      <div className="flex justify-between items-center">
+                        <div className="flex justify-between items-center">
                         <span className="font-['Outfit',Helvetica] text-sm text-gray-600">
                           Shipping
                         </span>
                         <span className="font-['Outfit',Helvetica] text-sm text-[#111111]">
-                          {shippingMethod === 'express' ? formatPrice(15) : 
+                          {watchedShippingMethod === 'express' ? formatPrice(15) : 
                            (totalPrice >= 50 ? 'FREE' : formatPrice(5))}
                         </span>
                       </div>
@@ -486,21 +695,20 @@ export const CheckoutPage: React.FC = () => {
                         <span className="font-['Outfit',Helvetica] font-medium text-[#111111] text-base">
                           Total
                         </span>
-                        <span className="font-['Outfit',Helvetica] font-medium text-[#111111] text-xl">
-                          {formatPrice(finalTotal + (shippingMethod === 'express' ? 10 : 0))}
-                        </span>
+<span className="font-['Outfit',Helvetica] font-medium text-[#111111] text-xl">
+   {formatPrice(finalTotal)}
+  </span>
                       </div>
                     </div>
-                    
-                    {/* Place Order Button */}
+                      {/* Place Order Button */}
                     <div className="p-4 border-t border-gray-200">
                       <Button 
-                        onClick={handlePlaceOrder}
-                        disabled={!agreedToTerms}
+                        onClick={handleSubmit(onSubmit)}
+                        disabled={!isValid || isSubmitting}
                         className="w-full bg-black text-white rounded-none py-4 font-['Outfit',Helvetica] text-base font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
                         <Lock className="h-4 w-4 mr-2" />
-                        PLACE ORDER
+                        {isSubmitting ? 'PROCESSING...' : 'PLACE ORDER'}
                       </Button>
                       
                       <div className="mt-4 text-center">

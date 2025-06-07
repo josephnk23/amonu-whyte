@@ -152,7 +152,7 @@ export const CartPage: React.FC = () => {
                           <div className="col-span-2 flex justify-center">
                             <div className="flex items-center border border-gray-300">
                               <button
-                                onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
                                 className="p-2 hover:bg-gray-50 transition-colors"
                               >
                                 <Minus className="h-3 w-3 text-gray-600" />

@@ -1,20 +1,19 @@
 import { ChevronDown, SearchIcon, ShoppingCartIcon, User2Icon, MenuIcon, XIcon } from "lucide-react";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useCart } from "../../../../contexts/CartContext";
 import { SearchOverlay } from "../../../../components/SearcHOverlay";
 
-// Define navigation items for better maintainability
+// Define navigation items without hardcoded active states
 const navItems = [
-  { text: "Home", active: true, url: "/" },
-  { text: "Collection", active: false },
-  { text: "Men", active: false },
-  { text: "Women", active: false },
+  { text: "Home", url: "/" },
+  { text: "Men", url: "/product-category/men" },
+  { text: "Women", url: "/product-category/women" },
 ];
 
 const secondaryNavItems = [
-  { text: "Shop", active: false, url: "/products" },
-  { text: "Accesories", active: false },
+  { text: "Shop", url: "/products" },
+  { text: "Accessories", url: "/product-category/accessories" },
 ];
 
 export const BackgroundByAnima = (): JSX.Element => {
@@ -23,6 +22,30 @@ export const BackgroundByAnima = (): JSX.Element => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   
   const { totalItems, openCart } = useCart();
+  const location = useLocation(); // Add useLocation hook
+
+  // Function to determine if a navigation item is active
+  const isActiveItem = (itemUrl: string) => {
+    const currentPath = location.pathname;
+    
+    // Special case for home - only active when exactly on home page
+    if (itemUrl === "/") {
+      return currentPath === "/";
+    }
+    
+    // For /products route, make it active for both /products and /products with search params
+    if (itemUrl === "/products") {
+      return currentPath === "/products" || currentPath.startsWith("/products?");
+    }
+    
+    // For category routes, check if current path matches exactly
+    if (itemUrl.startsWith("/product-category/")) {
+      return currentPath === itemUrl;
+    }
+    
+    // Default: check if current path starts with item URL
+    return currentPath.startsWith(itemUrl);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,39 +85,51 @@ export const BackgroundByAnima = (): JSX.Element => {
           </div>
         </div>
 
-        {/* Desktop Primary Navigation */}
+        {/* Desktop Primary Navigation - Updated with dynamic active state */}
         <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
-          {navItems.map((item, index) => (
-            <div key={index} className="h-[69.2px] flex items-center">
-              <div className="px-[3px] py-0">
-                <Link to={item.url || "/"} 
-                  className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
-                    item.active ? "border-b-2 border-black" : ""
-                  }`}
-                >
-                  {item.text}
-                </Link>
+          {navItems.map((item, index) => {
+            const isActive = isActiveItem(item.url);
+            return (
+              <div key={index} className="h-[69.2px] flex items-center">
+                <div className="px-[3px] py-0">
+                  <Link to={item.url} 
+                    className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] hover:text-gray-600 transition-colors ${
+                      isActive ? "border-b-2 border-black font-medium" : ""
+                    }`}
+                  >
+                    {item.text}
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Logo */}
         <div className="flex items-center justify-center h-7">
-          <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+          <Link to="/">
+            <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+          </Link>
         </div>
 
-        {/* Desktop Secondary Navigation */}
+        {/* Desktop Secondary Navigation - Updated with dynamic active state */}
         <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
-          {secondaryNavItems.map((item, index) => (
-            <div key={index} className="h-[69px] flex items-center">
-              <div className="px-[3px] py-0">
-                <Link to={item.url || "/"} className="font-['Outfit',Helvetica] font-normal text-black text-sm tracking-[0.42px] leading-[27px]">
-                  {item.text}
-                </Link>
+          {secondaryNavItems.map((item, index) => {
+            const isActive = isActiveItem(item.url);
+            return (
+              <div key={index} className="h-[69px] flex items-center">
+                <div className="px-[3px] py-0">
+                  <Link to={item.url} 
+                    className={`font-['Outfit',Helvetica] font-normal text-black text-sm tracking-[0.42px] leading-[27px] hover:text-gray-600 transition-colors ${
+                      isActive ? "border-b-2 border-black font-medium" : ""
+                    }`}
+                  >
+                    {item.text}
+                  </Link>
+                </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </nav>
 
         {/* Desktop Right Side Elements */}
@@ -124,7 +159,7 @@ export const BackgroundByAnima = (): JSX.Element => {
           </button>
         </div>
 
-        {/* Mobile Drawer */}
+        {/* Mobile Drawer - Updated with dynamic active state */}
         {isMenuOpen && (
           <div
             className={`md:hidden fixed top-[70px] left-0 w-full bg-white shadow-md border-[1px] border-gray-200 transition-all duration-300 z-40 ${
@@ -142,35 +177,45 @@ export const BackgroundByAnima = (): JSX.Element => {
                 </div>
               </div>
 
-              {/* Primary Navigation */}
-              {navItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="w-full py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Link to={item.url || "/"} 
-                    className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
-                      item.active ? "border-l-2 border-black pl-2" : ""
-                    }`}
+              {/* Primary Navigation - Updated with dynamic active state */}
+              {navItems.map((item, index) => {
+                const isActive = isActiveItem(item.url);
+                return (
+                  <div
+                    key={index}
+                    className="w-full py-2"
+                    onClick={() => setIsMenuOpen(false)}
                   >
-                    {item.text}
-                  </Link>
-                </div>
-              ))}
+                    <Link to={item.url} 
+                      className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
+                        isActive ? "border-l-2 border-black pl-2 font-medium" : ""
+                      }`}
+                    >
+                      {item.text}
+                    </Link>
+                  </div>
+                );
+              })}
               
-              {/* Secondary Navigation */}
-              {secondaryNavItems.map((item, index) => (
-                <div
-                  key={index}
-                  className="w-full py-2"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <Link to={item.url || "/"} className="font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px]">
-                    {item.text}
-                  </Link>
-                </div>
-              ))}
+              {/* Secondary Navigation - Updated with dynamic active state */}
+              {secondaryNavItems.map((item, index) => {
+                const isActive = isActiveItem(item.url);
+                return (
+                  <div
+                    key={index}
+                    className="w-full py-2"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <Link to={item.url} 
+                      className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
+                        isActive ? "border-l-2 border-black pl-2 font-medium" : ""
+                      }`}
+                    >
+                      {item.text}
+                    </Link>
+                  </div>
+                );
+              })}
               
               {/* User Icon */}
               <div
