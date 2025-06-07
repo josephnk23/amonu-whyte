@@ -38,7 +38,7 @@ export const ProductsPage = (): JSX.Element => {
   const productData = {
     title: id ? `Product ${id}` : "DREAM IS FREE TWINSET 2.0",
     color: "LIGHT GREY/GREY",
-    price: "£75.00",
+    price: " ₵75.00",
     availability: {
       status: "In stock, and ready to ship",
       progress: 82, // percentage of stock available
@@ -373,7 +373,7 @@ export const ProductsPage = (): JSX.Element => {
                     <TabsContent value="shipping" className="mt-7">
                       <div className="max-w-[457px]">
                         <p className="font-normal text-[#111111] text-[13px] leading-[23px] mb-4">
-                          We offer free standard shipping on all orders over £50. Orders are processed within 1-2 business days and typically arrive within 3-5 business days.
+                          We offer free standard shipping on all orders over  ₵50. Orders are processed within 1-2 business days and typically arrive within 3-5 business days.
                         </p>
                         <p className="font-normal text-[#111111] text-[13px] leading-[23px]">
                           Express shipping options are available at checkout for faster delivery.

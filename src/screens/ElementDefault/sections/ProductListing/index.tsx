@@ -36,7 +36,7 @@ const products = [
     id: 1,
     name: "SUNGLASSES",
     description: "Lorem ipsum dolor sit amet",
-    price: "120.00$",
+    price: "120.00 ₵",
     image: "/j.png",
     link: "https://elfrida.qodeinteractive.com/product/red-sunglasses/",
     category: "accessories",
@@ -48,7 +48,7 @@ const products = [
     id: 2,
     name: "PINK HANDBAG",
     description: "Lorem ipsum dolor sit amet",
-    price: "90.00$ – 120.00$",
+    price: "90.00₵ ",
     image: "/g.png",
     link: "https://elfrida.qodeinteractive.com/product/pink-handbag-2/",
     colors: ["#17181d", "#106151", "#371f3c", "#c0a3a4", "white"],
@@ -62,7 +62,7 @@ const products = [
     id: 3,
     name: "FANCY HAT",
     description: "Lorem ipsum dolor sit amet",
-    price: "170.00$ – 250.00$",
+    price: "170.00₵ ",
     image: "/d.png",
     link: "https://elfrida.qodeinteractive.com/product/fancy-hat/",
     category: "accessories",
@@ -74,7 +74,7 @@ const products = [
     id: 4,
     name: "RED BAG",
     description: "Lorem ipsum dolor sit amet",
-    price: "170.00$",
+    price: "170.00₵",
     image: "/f.png",
     link: "https://elfrida.qodeinteractive.com/product/red-bag-2/",
     badge: "New",
@@ -87,7 +87,7 @@ const products = [
     id: 5,
     name: "GOLDEN WATCH",
     description: "Lorem ipsum dolor sit amet",
-    price: "200.00$",
+    price: "200.00₵",
     image: "/p.png",
     link: "https://elfrida.qodeinteractive.com/product/red-bag/",
     category: "jewelry",
@@ -99,7 +99,7 @@ const products = [
     id: 6,
     name: "GREEN EARRINGS",
     description: "Lorem ipsum dolor sit amet",
-    price: "200.00$",
+    price: "200.00₵",
     image: "/h.png",
     link: "https://elfrida.qodeinteractive.com/product/green-earrings/",
     category: "jewelry",
@@ -111,7 +111,7 @@ const products = [
     id: 7,
     name: "BEIGE SUNGLASSES",
     description: "Lorem ipsum dolor sit amet",
-    price: "200.00$",
+    price: "200.00 ₵",
     image: "/g-1.png",
     link: "https://elfrida.qodeinteractive.com/product/beige-sunglasses/",
     category: "accessories",
@@ -123,7 +123,7 @@ const products = [
     id: 8,
     name: "PARTY BAG",
     description: "Lorem ipsum dolor sit amet",
-    price: "220.00$",
+    price: "220.00₵",
     image: "/j-1.png",
     link: "https://elfrida.qodeinteractive.com/product/party-bag/",
     colors: ["#482929", "#c6ceb6"],
@@ -137,7 +137,7 @@ const products = [
     id: 9,
     name: "LEOPARD BELT",
     description: "Lorem ipsum dolor sit amet",
-    price: "120.00$",
+    price: "120.00₵",
     image: "/h-1.png",
     link: "https://elfrida.qodeinteractive.com/product/leopard-belt/",
     category: "accessories",
@@ -149,7 +149,7 @@ const products = [
     id: 10,
     name: "ENGAGEMENT RING",
     description: "Lorem ipsum dolor sit amet",
-    price: "120.00$",
+    price: "120.00 ₵",
     image: "/f-1.png",
     link: "https://elfrida.qodeinteractive.com/product/golden-ring-copy/",
     category: "jewelry",
@@ -161,7 +161,7 @@ const products = [
     id: 11,
     name: "PARTY PURSE",
     description: "Lorem ipsum dolor sit amet",
-    price: "250.00$",
+    price: "250.00 ₵",
     image: "/f-2.png",
     link: "https://elfrida.qodeinteractive.com/product/party-purse/",
     category: "bags",
@@ -173,10 +173,9 @@ const products = [
     id: 12,
     name: "BRONZE NECKLASSE",
     description: "Lorem ipsum dolor sit amet",
-    price: "90.00$",
+    price: "90.00₵",
     image: "/s.png",
     link: "https://elfrida.qodeinteractive.com/product/bronze-necklasse/",
-    badge: "Sold",
     category: "jewelry",
     color: "bronze",
     size: "one-size",
@@ -324,7 +323,7 @@ export const ProductGridSection = (): JSX.Element => {
   };
 
   const applyFilter = () => {
-    console.log("Filter: $", minValue, "-", maxValue);
+    console.log("Filter:  ₵", minValue, "-", maxValue);
     console.log("Selected filters:", selectedFilters);
     // Add your actual filter logic here
   };
@@ -564,10 +563,10 @@ export const ProductGridSection = (): JSX.Element => {
             {/* Price label */}
             <div className="flex items-center mt-6 space-x-2">
               <span className="font-['Outfit',Helvetica] text-sm tracking-[0.35px] text-[#18191a]">
-                ${minValue} -
+                 ₵{minValue} -
               </span>
               <span className="font-['Outfit',Helvetica] text-sm tracking-[0.35px] text-[#18191a]">
-                ${maxValue}
+                 ₵{maxValue}
               </span>
             </div>
 

@@ -69,13 +69,14 @@ export const QuickView: React.FC<QuickViewProps> = ({ product, children }) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         {children || (
-          <button
-            onClick={handleEyeClick}
-            className="absolute top-3 right-3 z-20 bg-white/80 hover:bg-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 border-0 cursor-pointer"
-            type="button"
-          >
-            <Eye className="h-4 w-4 text-gray-700" />
-          </button>
+<button
+             onClick={handleEyeClick}
+             className="absolute top-3 right-3 z-20 bg-white/80 hover:bg-white rounded-full p-2 opacity-0 group-hover:opacity-100 transition-all duration-300 border-0 cursor-pointer"
+             type="button"
+            aria-label={`Quick view for ${product.name}`}
+           >
+             <Eye className="h-4 w-4 text-gray-700" />
+           </button>
         )}
       </DialogTrigger>
       

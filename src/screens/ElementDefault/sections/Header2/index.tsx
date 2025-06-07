@@ -87,7 +87,7 @@ export const BackgroundByAnima = (): JSX.Element => {
       <div className="hidden md:flex items-center gap-4">
         {/* Currency Selector */}
         <div className="font-elfrida-qodeinteractive-com-semantic-label-upper flex items-center font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] text-black text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]">
-          USD
+          GHS
           <ChevronDown className="h-5 ml-0 text-black" />
         </div>
 
@@ -159,7 +159,7 @@ export const BackgroundByAnima = (): JSX.Element => {
               <div
                 className="font-elfrida-qodeinteractive-com-semantic-label-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] text-black text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]"
               >
-                USD
+                GHS
                 <ChevronDown className="h-5 ml-1 inline text-black" />
               </div>
             </div>

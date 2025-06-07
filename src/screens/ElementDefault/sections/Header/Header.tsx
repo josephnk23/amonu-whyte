@@ -35,18 +35,18 @@ export const Header = () => {
   return (
     <header
       className={`w-full h-[70px] fixed top-0 left-0 flex items-center justify-between px-4 sm:px-10 transition-all duration-300 z-50 group ${
-        isScrolled ? "bg-white shadow-md" : "bg-transparent"
+        isScrolled || isMenuOpen ? "bg-white shadow-md" : "bg-transparent"
       } hover:bg-white hover:shadow-md`}
     >
       {/* Left Side: Search Icon */}
       <div className="flex items-center">
         <div className="flex items-center">
           <SearchIcon
-            className={`w-3.5 h-3.5 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+            className={`w-3.5 h-3.5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
           <div
             className={`ml-2 mt-px font-['Outfit',Helvetica] text-base font-normal ${
-              isScrolled ? "text-black" : "text-white group-hover:text-black"
+              isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
             } text-sm tracking-[0.42px] leading-[27px]`}
           >
             SEARCH
@@ -61,15 +61,17 @@ export const Header = () => {
             <div className="px-[3px] py-0">
               <div
                 className={`font-['Outfit',Helvetica] font-normal text-sm ${
-                  isScrolled ? "text-black" : "text-white group-hover:text-black"
+                  isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
                 } tracking-[0.05px] leading-[27px] ${
-                  item.active ? "border-b-[2px] border-black" : ""
+                  item.active 
+                    ? `border-b-[2px] ${isScrolled || isMenuOpen ? "border-black" : "border-white group-hover:border-black"}` 
+                    : ""
                 }`}
               >
                 <Link
                   to={item.url || "/"}
                   className={`${
-                    item.active ? "text-black" : isScrolled ? "text-black" : "text-white group-hover:text-black"
+                    isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
                   } cursor-pointer hover:text-black transition-colors`}
                 >
                   {item.text}
@@ -83,7 +85,7 @@ export const Header = () => {
       {/* Logo */}
       <div className="flex items-center justify-center h-7">
         <Link to="/">
-          <div className="w-[102.66px] h-[27.99px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+          <div className="w-[102.66px] h-[50px]  bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
         </Link>
       </div>
 
@@ -95,7 +97,7 @@ export const Header = () => {
               <Link 
                 to={item.url || "/"}
                 className={`font-['Outfit',Helvetica] font-normal ${
-                  isScrolled ? "text-black" : "text-white group-hover:text-black"
+                  isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
                 } text-sm tracking-[0.42px] leading-[27px] cursor-pointer hover:text-black transition-colors`}
               >
                 {item.text}
@@ -110,30 +112,30 @@ export const Header = () => {
         {/* Currency Selector */}
         <div
           className={`font-elfrida-qodeinteractive-com-semantic-label-upper flex items-center font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] ${
-            isScrolled ? "text-black" : "text-white group-hover:text-black"
+            isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
           } text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]`}
         >
-          USD
+          GHS
           <ChevronDown
-            className={`h-5 ml-0 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+            className={`h-5 ml-0 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
         </div>
 
         {/* User Icon */}
         <div className="flex items-center pl-3 pr-5">
           <User2Icon
-            className={`h-5 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+            className={`h-5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
         </div>
 
         {/* Cart */}
         <div className="flex items-center">
           <ShoppingCartIcon
-            className={`h-5 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+            className={`h-5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
           <div
             className={`ml-[10px] mt-1 font-['Outfit',Helvetica] font-normal ${
-              isScrolled ? "text-black" : "text-white group-hover:text-black"
+              isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
             } text-sm tracking-[0.42px] leading-[27px]`}
           >
             CART / 0
@@ -146,11 +148,11 @@ export const Header = () => {
         <button onClick={toggleMenu} aria-label="Toggle menu">
           {isMenuOpen ? (
             <XIcon
-              className={`h-6 w-6 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+              className={`h-6 w-6 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
             />
           ) : (
             <MenuIcon
-              className={`h-6 w-6 ${isScrolled ? "text-black" : "text-white group-hover:text-black"}`}
+              className={`h-6 w-6 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
             />
           )}
         </button>
@@ -201,7 +203,7 @@ export const Header = () => {
               <div
                 className={`font-elfrida-qodeinteractive-com-semantic-label-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-weight)] text-black text-[length:var(--elfrida-qodeinteractive-com-semantic-label-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-label-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-label-upper-line-height)]`}
               >
-                USD
+                GHS
                 <ChevronDown className="h-5 ml-1 inline text-black" />
               </div>
             </div>
