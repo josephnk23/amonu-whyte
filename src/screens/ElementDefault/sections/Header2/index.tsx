@@ -72,7 +72,7 @@ export const BackgroundByAnima = (): JSX.Element => {
     <>
       <header
         className={`w-full h-[70px] fixed top-0 left-0 flex items-center justify-between px-4 sm:px-10 transition-all duration-300 z-50 group ${
-          isScrolled ? "bg-white shadow-md border-[1px] border-gray-200" : "bg-transparent border-[1px] border-gray-200"
+          isScrolled ? "bg-white shadow-md border-[1px] border-gray-200" : "bg-white border-[1px] border-gray-200"
         } hover:bg-white hover:shadow-md hover:border-gray-200`}
       >
         {/* SearchIcon Section */}

@@ -26,7 +26,7 @@ export const CartDrawer: React.FC = () => {
           </h2>
           <button 
             onClick={closeCart}
-            className="p-1 hover:bg-gray-100 rounded-md transition-colors"
+            className="p-1 hover:bg-gray-100 rounded-none transition-colors"
           >
             <X className="h-5 w-5 text-gray-600" />
           </button>
@@ -42,7 +42,7 @@ export const CartDrawer: React.FC = () => {
             items.map((item) => (
               <div key={item.id} className="flex gap-4">
                 {/* Product Image */}
-                <div className="w-20 h-20 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                <div className="w-40 h-40 bg-gray-100 rounded-none overflow-hidden flex-shrink-0">
                   <img 
                     src={item.image} 
                     alt={item.name}
@@ -68,7 +68,7 @@ export const CartDrawer: React.FC = () => {
                     {/* Remove Button */}
                     <button 
                       onClick={() => removeItem(item.id)}
-                      className="p-1 hover:bg-gray-100 rounded-md transition-colors ml-2"
+                      className="p-1 hover:bg-gray-100 rounded-none transition-colors ml-2"
                     >
                       <X className="h-4 w-4 text-gray-400" />
                     </button>
@@ -76,7 +76,7 @@ export const CartDrawer: React.FC = () => {
 
                   {/* Quantity Controls */}
                   <div className="flex items-center mt-3 gap-3">
-                    <div className="flex items-center border border-gray-300 rounded-md">
+                    <div className="flex items-center border border-gray-300 rounded-none">
                       <button
                         onClick={() => updateQuantity(item.id, Math.max(0, item.quantity - 1))}
                         className="p-2 hover:bg-gray-50 transition-colors"

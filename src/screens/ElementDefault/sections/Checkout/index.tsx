@@ -223,9 +223,8 @@ export const CheckoutPage: React.FC = () => {
               </span>
             </div>
           </div>          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-16">
-            
-            {/* Checkout Form */}
-            <form onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 space-y-8">
+              {/* Checkout Form */}
+            <form id="checkout-form" onSubmit={handleSubmit(onSubmit)} className="lg:col-span-2 space-y-8">
               
               {/* Customer Information */}
               <Card className="border border-gray-200 rounded-none overflow-hidden">
@@ -699,11 +698,11 @@ export const CheckoutPage: React.FC = () => {
    {formatPrice(finalTotal)}
   </span>
                       </div>
-                    </div>
-                      {/* Place Order Button */}
+                    </div>                      {/* Place Order Button */}
                     <div className="p-4 border-t border-gray-200">
                       <Button 
-                        onClick={handleSubmit(onSubmit)}
+                        type="submit"
+                        form="checkout-form"
                         disabled={!isValid || isSubmitting}
                         className="w-full bg-black text-white rounded-none py-4 font-['Outfit',Helvetica] text-base font-medium hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
                       >
