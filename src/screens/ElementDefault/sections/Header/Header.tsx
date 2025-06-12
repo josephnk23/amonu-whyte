@@ -7,7 +7,7 @@ import { SearchOverlay } from "../../../../components/SearcHOverlay";// Fixed ca
 // Define navigation items without hardcoded active states
 const navItems = [
   { text: "Home", url: "/" },
-  { text: "Collection", url: "/products" },
+  { text: "Collection", url: "/collection" },
   { text: "Shop", url: "/products" },
 ];
 
