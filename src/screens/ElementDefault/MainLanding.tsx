@@ -34,7 +34,7 @@ export const ElementDefault = (): JSX.Element => {
       <FooterWrapperByAnima />
      
 
-      <div className="flex flex-col w-[93px] h-[46px] items-start justify-center fixed bottom-[24px] right-[24px]">
+      <div className="flex flex-col w-[93px] h-[46px] items-start justify-center fixed bottom-[50px] right-[24px]">
         <Button
           className="relative flex-1 w-[93.28px] grow bg-wwwmacofalltradescommine-shaft border border-solid border-[#252525] rounded-none p-0 h-full"
           aria-label="Scroll to top"

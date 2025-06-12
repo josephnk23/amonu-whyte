@@ -177,7 +177,7 @@ export const MainByAnima = () => {
   return (
     <section className="w-full">
       {/* Hero Section */}
-      <div className="w-full h-screen">
+      <div className="w-full h-screen xl:h-[600px]">
         <style>{`
           .carousel-image {
             transition: transform 4s ease-in-out;
@@ -187,10 +187,10 @@ export const MainByAnima = () => {
             transform: scale(1.1);
           }
         `}</style>
-        <div className="w-full mx-auto h-screen">
+        <div className="w-full mx-auto h-screen xl:h-[600px]">
           <Slider {...settings}>
             {images.map((image, index) => (
-              <div key={index} className="relative h-screen">
+              <div key={index} className="relative h-screen xl:h-[600px]">
                 <img
                   src={image}
                   alt={`Fashion Slide ${index + 1}`}

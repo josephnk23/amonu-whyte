@@ -9,6 +9,7 @@ const ProductGridSection = lazy(() => import("./screens/ElementDefault/sections/
 const ProductsPage = lazy(() => import("./screens/ElementDefault/sections/ProductPage").then(m => ({ default: m.ProductsPage })));
 const CartPage = lazy(() => import("./screens/ElementDefault/sections/Cart").then(m => ({ default: m.CartPage })));
 const CheckoutPage = lazy(() => import("./screens/ElementDefault/sections/Checkout").then(m => ({ default: m.CheckoutPage })));
+const CollectionPage = lazy(() => import("./screens/ElementDefault/sections/Collection").then(m => ({ default: m.CollectionPage })));
 const SearchPage = lazy(() => import("./screens/ElementDefault/sections/Search").then(m => ({ default: m.SearchPage }))); // Add this
 
 // Simple loading component
@@ -34,6 +35,7 @@ const AppRoutes: React.FC = () => {
             <Route path="/productpage" element={<ProductsPage />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="collection" element={<CollectionPage />} />
           </Routes>
         </Suspense>
       </BrowserRouter>

@@ -26,7 +26,7 @@ export const FooterByAnima = (): JSX.Element => {
       </div>
 
       {/* Feature boxes */}
-      <div className="flex w-full px-4 pt-[49px]">
+      {/* <div className="flex w-full px-4 pt-[49px]">
         <div className="grid grid-cols-4 w-full">
           {footerFeatures.map((feature, index) => (
             <div
@@ -41,7 +41,7 @@ export const FooterByAnima = (): JSX.Element => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </footer>
   );
 };

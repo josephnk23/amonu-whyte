@@ -7,14 +7,10 @@ import { SearchOverlay } from "../../../../components/SearcHOverlay";
 // Define navigation items without hardcoded active states
 const navItems = [
   { text: "Home", url: "/" },
-  { text: "Men", url: "/product-category/men" },
-  { text: "Women", url: "/product-category/women" },
+  { text: "Collection", url: "/collection" },
+    { text: "Shop", url: "/products" },
 ];
 
-const secondaryNavItems = [
-  { text: "Shop", url: "/products" },
-  { text: "Accessories", url: "/product-category/accessories" },
-];
 
 export const BackgroundByAnima = (): JSX.Element => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,6 +72,7 @@ export const BackgroundByAnima = (): JSX.Element => {
         } hover:bg-white hover:shadow-md hover:border-gray-200`}
       >
         {/* SearchIcon Section */}
+        <div className="flex items-center gap-8">
         <div className="flex items-center cursor-pointer" onClick={openSearch}>
           <div className="flex items-center">
             <SearchIcon className="w-4 h-4 text-black" />
@@ -104,32 +101,19 @@ export const BackgroundByAnima = (): JSX.Element => {
             );
           })}
         </nav>
+        </div>
 
         {/* Logo */}
-        <div className="flex items-center justify-center h-7">
-          <Link to="/">
-            <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
-          </Link>
-        </div>
+       {/* Logo - Now truly centered */}
+<div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center h-7">
+  <Link to="/">
+    <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+  </Link>
+</div>
 
         {/* Desktop Secondary Navigation - Updated with dynamic active state */}
         <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
-          {secondaryNavItems.map((item, index) => {
-            const isActive = isActiveItem(item.url);
-            return (
-              <div key={index} className="h-[69px] flex items-center">
-                <div className="px-[3px] py-0">
-                  <Link to={item.url} 
-                    className={`font-['Outfit',Helvetica] font-normal text-black text-sm tracking-[0.42px] leading-[27px] hover:text-gray-600 transition-colors ${
-                      isActive ? "border-b-2 border-black font-medium" : ""
-                    }`}
-                  >
-                    {item.text}
-                  </Link>
-                </div>
-              </div>
-            );
-          })}
+          
         </nav>
 
         {/* Desktop Right Side Elements */}
@@ -198,24 +182,7 @@ export const BackgroundByAnima = (): JSX.Element => {
               })}
               
               {/* Secondary Navigation - Updated with dynamic active state */}
-              {secondaryNavItems.map((item, index) => {
-                const isActive = isActiveItem(item.url);
-                return (
-                  <div
-                    key={index}
-                    className="w-full py-2"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    <Link to={item.url} 
-                      className={`font-['Outfit',Helvetica] font-normal text-sm text-black tracking-[0.05px] leading-[27px] ${
-                        isActive ? "border-l-2 border-black pl-2 font-medium" : ""
-                      }`}
-                    >
-                      {item.text}
-                    </Link>
-                  </div>
-                );
-              })}
+              
               
               {/* User Icon */}
               <div

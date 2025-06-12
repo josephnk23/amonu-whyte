@@ -8,14 +8,10 @@ import { SearchOverlay } from "../../../../components/SearcHOverlay";// Fixed ca
 const navItems = [
   { text: "Home", url: "/" },
   { text: "Collection", url: "/products" },
-  { text: "Men", url: "/product-category/men" },
-  { text: "Women", url: "/product-category/women" },
+  { text: "Shop", url: "/products" },
 ];
 
-const secondaryNavItems = [
-  { text: "Shop", url: "/products" },
-  { text: "Accessories", url: "/product-category/accessories" },
-];
+
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -76,6 +72,7 @@ export const Header = () => {
       } hover:bg-white hover:shadow-md`}
     >
       {/* Left Side: Search Icon */}
+      <div className="flex items-center gap-8">
       <div className="flex items-center cursor-pointer" onClick={openSearch}>
         <div className="flex items-center">
           <SearchIcon
@@ -123,16 +120,20 @@ export const Header = () => {
           );
         })}
       </nav>
-
-      {/* Logo */}
-      <div className="flex items-center justify-center h-7">
-        <Link to="/">
-          <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
-        </Link>
       </div>
 
+      {/* Centered Logo */}
+
+      {/* Logo */}
+    {/* Logo - Now truly centered */}
+<div className="absolute left-1/2 transform -translate-x-1/2 flex items-center justify-center h-7">
+  <Link to="/">
+    <div className="w-[102.66px] h-[50px] bg-[url(/newlogo.png)] bg-cover bg-[50%_50%]" />
+  </Link>
+</div>
+
       {/* Desktop Secondary Navigation */}
-      <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
+      {/* <nav className="hidden md:flex items-center gap-[54px] px-[27px]">
         {secondaryNavItems.map((item, index) => {
           const isActive = isActiveItem(item.url);
           return (
@@ -152,7 +153,7 @@ export const Header = () => {
             </div>
           );
         })}
-      </nav>
+      </nav> */}
 
       {/* Desktop Right Side Elements */}
       <div className="hidden md:flex items-center gap-4">
@@ -222,7 +223,7 @@ export const Header = () => {
               );
             })}
             {/* Secondary Navigation */}
-            {secondaryNavItems.map((item, index) => {
+            {/* {secondaryNavItems.map((item, index) => {
               const isActive = isActiveItem(item.url);
               return (
                 <div
@@ -240,7 +241,7 @@ export const Header = () => {
                   </Link>
                 </div>
               );
-            })}
+            })} */}
             
             {/* User Icon */}
             <div

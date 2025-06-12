@@ -1,4 +1,4 @@
-import { ArrowRightIcon } from "lucide-react";
+import { ArrowRightIcon, Facebook, Instagram, Twitter, Mail, Phone, MapPin } from "lucide-react";
 import { Button } from "../../../../components/ui/button";
 import { Input } from "../../../../components/ui/input";
 import { Separator } from "../../../../components/ui/separator";
@@ -7,14 +7,18 @@ import { Separator } from "../../../../components/ui/separator";
 const aboutUsLinks = [
   "About Us",
   "Contact us",
-  "Get In Touch",
-  "Gift Card",
-  "Our Store",
+  
 ];
 
-const helpLinks = ["Shop", "Cart", "Wishlist", "My Account", "Checkout"];
+const helpLinks = [ "Shipping Info","Returns"];
 
-const legalLinks = ["Shop", "Cart", "Wishlist", "My Account", "Checkout"];
+const socialLinks = [
+  { name: "Facebook", href: "https://facebook.com/amonuwhyte", icon: Facebook },
+  { name: "Instagram", href: "https://instagram.com/amonuwhyte", icon: Instagram },
+  { name: "Twitter", href: "https://twitter.com/amonuwhyte", icon: Twitter },
+];
+
+const legalLinks = ["Terms & Conditions", "Privacy Policy"];
 
 export const FooterWrapperByAnima = (): JSX.Element => {
   return (
@@ -22,32 +26,7 @@ export const FooterWrapperByAnima = (): JSX.Element => {
       <div className="relative w-full bg-elfridaqodeinteractivecomcod-gray py-16 px-4 md:px-8 lg:px-16">
         <div className="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Newsletter Section */}
-          <div className="flex flex-col space-y-6">
-            <h4 className="font-elfrida-qodeinteractive-com-semantic-heading-4-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-heading-4-upper-font-weight)] text-wwwmacofalltradescomwhite text-[length:var(--elfrida-qodeinteractive-com-semantic-heading-4-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-heading-4-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-heading-4-upper-line-height)] [font-style:var(--elfrida-qodeinteractive-com-semantic-heading-4-upper-font-style)]">
-              BE THE FIRST TO KNOW ABOUT EVENTS,
-              <br />
-              NEW PRODUCTS &amp; OFFERS.
-            </h4>
-
-            <p className="font-elfrida-qodeinteractive-com-DM-sans-9pt-regular font-[number:var(--elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-DM-sans-9pt-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-DM-sans-9pt-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-DM-sans-9pt-regular-font-style)]">
-              *Subscribe to our Newsletter and get 15% off
-            </p>
-
-            <div className="relative flex w-full">
-              <Input
-                className="bg-transparent rounded-none border border-neutral-500 text-wwwmacofalltradescomwhite font-elfrida-qodeinteractive-com-semantic-input font-[number:var(--elfrida-qodeinteractive-com-semantic-input-font-weight)] text-[length:var(--elfrida-qodeinteractive-com-semantic-input-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-input-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-input-line-height)] [font-style:var(--elfrida-qodeinteractive-com-semantic-input-font-style)] h-14 pl-5"
-                placeholder="Enter your email"
-              />
-              <Button
-                
-                className="absolute right-0 hover:bg-transparent rounded-none bg-transparent hover:text-black hover:text-wwwmacofalltradescomwhite h-14 w-14 flex items-center justify-center"
-                aria-label="Subscribe"
-              >
-                <ArrowRightIcon className="w-4 h-4 hover:text-black text-wwwmacofalltradescomwhite" />
-              </Button>
-            </div>
-          </div>
-
+        
           {/* About Us Column */}
           <div className="flex flex-col space-y-4">
             <h5 className="font-elfrida-qodeinteractive-com-semantic-heading-5-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-weight)] text-wwwmacofalltradescomwhite text-[length:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-line-height)] [font-style:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-style)]">
@@ -69,7 +48,7 @@ export const FooterWrapperByAnima = (): JSX.Element => {
           {/* Help Column */}
           <div className="flex flex-col space-y-4">
             <h5 className="font-elfrida-qodeinteractive-com-semantic-heading-5-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-weight)] text-wwwmacofalltradescomwhite text-[length:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-line-height)] [font-style:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-style)]">
-              HELP
+              SUPPORT
             </h5>
             <nav className="flex flex-col gap-1.5">
               {helpLinks.map((link, index) => (
@@ -101,6 +80,52 @@ export const FooterWrapperByAnima = (): JSX.Element => {
               ))}
             </nav>
           </div>
+
+         <div className="flex flex-col md:flex-col items-start gap-4">
+            <h5 className="font-elfrida-qodeinteractive-com-semantic-heading-5-upper font-[number:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-weight)] text-wwwmacofalltradescomwhite text-[length:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-size)] tracking-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-line-height)] [font-style:var(--elfrida-qodeinteractive-com-semantic-heading-5-upper-font-style)]">
+              FOLLOW US
+            </h5>
+            <div className="flex items-center gap-4">
+              {socialLinks.map((social, index) => {
+                const IconComponent = social.icon;
+                return (
+                  <a
+                    key={index}
+                    href={social.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-10 h-10 bg-white rounded-full flex items-center justify-center hover:bg-white hover:text-black transition-colors"
+                    aria-label={social.name}
+                  >
+                    <IconComponent className="h-5 w-5" />
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Contact Info - Added here for better use of space */}
+            <div className="mt-6 space-y-2">
+              <div className="flex items-center gap-2">
+                <Phone className="h-4 w-4 text-elfridaqodeinteractivecomsilver" />
+                <span className="font-elfrida-qodeinteractive-com-DM-sans-9pt-regular text-elfridaqodeinteractivecomsilver text-sm">
+                  +233 540279797
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Mail className="h-4 w-4 text-elfridaqodeinteractivecomsilver" />
+                <span className="font-elfrida-qodeinteractive-com-DM-sans-9pt-regular text-elfridaqodeinteractivecomsilver text-sm">
+                  amonuwhyte@gmail.com
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <MapPin className="h-4 w-4 text-elfridaqodeinteractivecomsilver" />
+                <span className="font-elfrida-qodeinteractive-com-DM-sans-9pt-regular text-elfridaqodeinteractivecomsilver text-sm">
+                  71 Gbolibor Street Labadi, Accra, Ghana
+                </span>
+              </div>
+            </div>
+          </div>
+       
         </div>
       </div>
 
@@ -111,7 +136,7 @@ export const FooterWrapperByAnima = (): JSX.Element => {
         <div className="max-w-screen-2xl mx-auto flex flex-col md:flex-row justify-between items-center">
           <div className="flex items-center space-x-1 mb-4 md:mb-0">
             <span className="font-elfrida-qodeinteractive-com-outfit-regular font-[number:var(--elfrida-qodeinteractive-com-outfit-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-outfit-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-outfit-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-outfit-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-outfit-regular-font-style)]">
-              © 2024
+              © 2025
             </span>
             <span className="font-elfrida-qodeinteractive-com-outfit-regular font-[number:var(--elfrida-qodeinteractive-com-outfit-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-outfit-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-outfit-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-outfit-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-outfit-regular-font-style)]">
               Amonu Whyte
@@ -134,12 +159,7 @@ export const FooterWrapperByAnima = (): JSX.Element => {
             >
               Privacy Policy
             </a>
-            <a
-              href="#"
-              className="font-elfrida-qodeinteractive-com-outfit-regular font-[number:var(--elfrida-qodeinteractive-com-outfit-regular-font-weight)] text-elfridaqodeinteractivecomsilver text-[length:var(--elfrida-qodeinteractive-com-outfit-regular-font-size)] tracking-[var(--elfrida-qodeinteractive-com-outfit-regular-letter-spacing)] leading-[var(--elfrida-qodeinteractive-com-outfit-regular-line-height)] [font-style:var(--elfrida-qodeinteractive-com-outfit-regular-font-style)] hover:text-wwwmacofalltradescomwhite transition-colors"
-            >
-              Accessibility
-            </a>
+            
           </div>
         </div>
       </div>
