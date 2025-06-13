@@ -363,12 +363,17 @@ export const MainByAnima = () => {
                 key={product.id}
                 className="w-[calc(50%-10px)] sm:w-[calc(50%-10px)] md:w-[calc(33.33%-13.33px)] lg:w-[calc(25%-15px)] flex-none group"
               >
-                <Card className="border border-[#cccccc] rounded-none ">
+                <Card className="border shadow-none border-[#cccccc] rounded-none ">
                   <CardContent className="relative overflow-hidden p-0">
+                  
                     <div
-                      className=" w-full h-[611.5px] bg-cover bg-center"
-                      style={{ backgroundImage: `url(${product.image})` }}
+                      className=" w-full h-[250px] sm:h-[380px] md:h-[420px] lg:h-[463px] bg-cover bg-center"
+                      
                     >
+
+                       <div className="flex flex-col justify-center h-full items-center">
+                      <img  src={`${product.image}`} />
+                      </div>
                       <button className="absolute bottom-0 left-0 right-0 bg-black text-white text-sm font-['Outfit',Helvetica] py-3 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
                         Select Options
                       </button>
