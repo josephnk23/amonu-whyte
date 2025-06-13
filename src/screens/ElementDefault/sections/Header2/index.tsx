@@ -74,11 +74,9 @@ export const BackgroundByAnima = (): JSX.Element => {
         {/* SearchIcon Section */}
         <div className="flex items-center gap-8">
         <div className="flex items-center cursor-pointer" onClick={openSearch}>
-          <div className="flex items-center">
-            <SearchIcon className="w-4 h-4 text-black" />
-            <div className="ml-2 hidden sm:block mt-px font-['Outfit',Helvetica] text-sm font-normal text-black tracking-[0.42px] leading-[27px]">
-              Search
-            </div>
+          <div title="Search" className="flex items-center">
+            <SearchIcon className="w-5 h-5 text-black" />
+            
           </div>
         </div>
 

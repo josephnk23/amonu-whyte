@@ -74,17 +74,11 @@ export const Header = () => {
       {/* Left Side: Search Icon */}
       <div className="flex items-center gap-8">
       <div className="flex items-center cursor-pointer" onClick={openSearch}>
-        <div className="flex items-center">
-          <SearchIcon
-            className={`w-3.5 h-3.5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
+        <div title='Search' className="flex items-center">
+          <SearchIcon 
+            className={`w-5 h-5 ${isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"}`}
           />
-          <div
-            className={`ml-2 mt-px font-['Outfit',Helvetica] text-base font-normal ${
-              isScrolled || isMenuOpen ? "text-black" : "text-white group-hover:text-black"
-            } text-sm tracking-[0.42px] leading-[27px]`}
-          >
-            SEARCH
-          </div>
+         
         </div>
       </div>
 

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../../../../components/ui/button";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "../../../../components/ui/card";
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -173,7 +174,22 @@ const blogPosts = [
   },
 ];
 
+ 
+
 export const MainByAnima = () => {
+
+  const navigate = useNavigate();
+
+  const handleProductClick = (productId: number) => {
+    navigate(`/product/${productId}`);
+     window.scrollTo(0, 0);
+  };
+
+  const handleSelectOptions = (e: React.MouseEvent, productId: number) => {
+    e.stopPropagation(); // Prevent card click event
+    navigate(`/product/${productId}`);
+     window.scrollTo(0, 0);
+  };
   return (
     <section className="w-full">
       {/* Hero Section */}
@@ -363,7 +379,7 @@ export const MainByAnima = () => {
                 key={product.id}
                 className="w-[calc(50%-10px)] sm:w-[calc(50%-10px)] md:w-[calc(33.33%-13.33px)] lg:w-[calc(25%-15px)] flex-none group"
               >
-                <Card className="border shadow-none border-[#cccccc] rounded-none ">
+                <Card  onClick={() => handleProductClick(product.id)} className="cursor-pointer border shadow-none border-[#cccccc] rounded-none ">
                   <CardContent className="relative overflow-hidden p-0">
                   
                     <div
@@ -374,7 +390,7 @@ export const MainByAnima = () => {
                        <div className="flex flex-col justify-center h-full items-center">
                       <img  src={`${product.image}`} />
                       </div>
-                      <button className="absolute bottom-0 left-0 right-0 bg-black text-white text-sm font-['Outfit',Helvetica] py-3 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
+                      <button  onClick={(e) => handleSelectOptions(e, product.id)} className="absolute bottom-0 left-0 right-0 bg-black text-white text-sm font-['Outfit',Helvetica] py-3 opacity-0 translate-y-[100%] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 ease-in-out">
                         Select Options
                       </button>
                     </div>
